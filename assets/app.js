@@ -536,6 +536,19 @@ async function initEquipo() {
     lb.querySelector('img').src = b.dataset.src; lb.querySelector('p').textContent = b.dataset.alt; lb.hidden = false; }; });
 }
 
+function bindLightbox(root) {
+  let lb = document.getElementById('lightbox');
+  if (!lb) {
+    lb = document.createElement('div'); lb.id = 'lightbox'; lb.className = 'lightbox'; lb.hidden = true;
+    lb.innerHTML = '<button class="icon-btn lb-x" aria-label="Cerrar">×</button><img alt=""><p></p>';
+    document.body.appendChild(lb);
+    lb.onclick = (ev) => { if (ev.target !== lb.querySelector('img')) lb.hidden = true; };
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') lb.hidden = true; });
+  }
+  root.querySelectorAll('.eq-ph').forEach((b) => { b.onclick = () => {
+    lb.querySelector('img').src = b.dataset.src; lb.querySelector('p').textContent = b.dataset.alt; lb.hidden = false; }; });
+}
+
 /* ---------------- Página de proyecto ---------------- */
 async function initProyecto() {
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -598,10 +611,26 @@ async function initProyecto() {
       <p>${esc(P.confiabilidad)}</p></div>
       ${m.calidad ? `<a class="btn ghost" href="calidad.html?m=${enc}">Ver el detalle técnico</a>` : ''}</section>` : ''}
 
+    ${m.verificacion ? (() => { const V = m.verificacion; const ph = (src, alt) => `<button class="eq-ph" data-src="${esc(src)}" data-alt="${esc(alt)}"><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy"></button>`; return `<section class="pj-sec ver" id="verificacion">
+      <div class="eyebrow">Control de precisión</div><h2>${esc(V.titulo)}</h2>
+      <p class="pj-lead">${esc(V.intro)}</p>
+      <div class="q-kpis">${V.kpis.map(([v, l, n]) => `<div class="q-kpi"><b>${esc(v)}</b><span>${esc(l)}</span>${n ? `<small>${esc(n)}</small>` : ''}</div>`).join('')}</div>
+      <div class="ver-tbl-wrap"><table class="ver-tbl"><thead><tr><th>Tramo</th><th>GNSS · AutoCAD</th><th>Modelo · WebODM</th><th>Diferencia</th><th>Relativo</th></tr></thead>
+        <tbody>${V.tabla.map((r) => `<tr>${r.map((x, i) => `<td${i === 3 ? ' class="ver-dif"' : ''}>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+        <p class="spec-note">${esc(V.nota_tabla)}</p></div>
+      <h3 class="ver-h3">Los puntos medidos</h3>
+      <div class="ver-pts">${V.puntos.map((q) => `<figure>${ph(q.img, `Punto ${q.id}`)}<figcaption><b>${esc(q.id)}</b> ${esc(q.texto)}</figcaption></figure>`).join('')}</div>
+      <h3 class="ver-h3">Las mismas distancias medidas sobre el modelo</h3>
+      <div class="ver-caps">${V.capturas.map((f) => `<figure>${ph(f.src, f.alt)}<figcaption>${esc(f.alt)}</figcaption></figure>`).join('')}</div>
+      <div class="pj-grid four ver-an">${V.analisis.map(([t, x]) => `<article class="pj-card"><h3>${esc(t)}</h3><p>${esc(x)}</p></article>`).join('')}</div>
+      <p class="ver-concl">${esc(V.conclusion)}</p>
+    </section>`; })() : ''}
+
     ${m.descripcion ? `<section class="pj-sec pj-tech"><div class="eyebrow">Descripción técnica</div><p>${esc(m.descripcion)}</p></section>` : ''}
 
     ${c && typeof c === 'object' ? `<section class="pj-sec pj-cta">
       <div><h2>¿Necesitás un relevamiento así?</h2><p>Escribime y lo vemos. ${esc(c.nombre || '')}</p></div>
       <div class="pj-cta-btns">${contactButtons(c, `Hola Guillermo, vi el relevamiento "${m.titulo}" en tu web y quería consultarte por un trabajo similar.`)}</div>
     </section>` : ''}`;
+  bindLightbox(root);
 }

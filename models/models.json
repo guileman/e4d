@@ -115,6 +115,11 @@
             "texto": "Con los puntos de control, el error en X e Y es de unos 2 mm RMS. La precisión horizontal absoluta (CE90) es de 0,5 cm y la relativa de 4,8 cm."
           },
           {
+            "tipo": "ok",
+            "titulo": "Distancias verificadas en campo",
+            "texto": "Tres distancias de 54 a 107 m medidas sobre el modelo coinciden con las medidas con GNSS RTK con diferencias de 2 a 4 cm (≈ 3 cm RMS, menos de 0,05 %), incluido un punto de chequeo que no se usó en el procesamiento."
+          },
+          {
             "tipo": "atencion",
             "titulo": "La altimetría es el punto más débil",
             "texto": "El error vertical en los GCP es de 5,7 cm RMS, con un máximo de −12,3 cm en el GCP12 y +7,8 cm en el GCP10. La precisión vertical (LE90) ronda los 10 cm, y el error vertical de la nube 3D llega a 27 cm RMS."
@@ -218,6 +223,101 @@
       "equipo": {
         "id": "phantom-4-pro",
         "nombre": "DJI Phantom 4 Pro"
+      },
+      "verificacion": {
+        "titulo": "Verificación de distancias en campo",
+        "intro": "Para comprobar que las medidas del modelo coinciden con la realidad, se midieron con GNSS RTK (Emlid Reach RS2) tres puntos del predio y se calcularon sus distancias en AutoCAD. Después se midieron las mismas distancias sobre el modelo 3D en WebODM y se compararon.",
+        "kpis": [
+          [
+            "≈ 3 cm",
+            "Error medio (RMS)",
+            "3 tramos de 54 a 107 m"
+          ],
+          [
+            "< 0,05 %",
+            "Error relativo",
+            "como máximo"
+          ],
+          [
+            "1 : 2.700",
+            "Peor caso",
+            "4 cm en 107 m"
+          ]
+        ],
+        "tabla": [
+          [
+            "P13 → P2",
+            "53,606 m",
+            "53,63 m",
+            "+2,4 cm",
+            "0,045 %"
+          ],
+          [
+            "P2 → P10",
+            "91,528 m",
+            "91,55 m",
+            "+2,2 cm",
+            "0,024 %"
+          ],
+          [
+            "P13 → P10",
+            "107,120 m",
+            "107,16 m",
+            "+4,0 cm",
+            "0,037 %"
+          ]
+        ],
+        "nota_tabla": "Distancias 3D (incluyen el desnivel). Coordenadas GNSS en POSGAR 2007 · Gauss-Krüger faja 5.",
+        "puntos": [
+          {
+            "id": "P2",
+            "texto": "Esquina de una tapa de hormigón, a nivel del piso. También se usó como punto de control (GCP2) en el procesamiento.",
+            "img": "models/frigorifico-rn11/verificacion/p2.jpg"
+          },
+          {
+            "id": "P10",
+            "texto": "Dado de hormigón sobre una plataforma elevada, unos 6,6 m por encima del piso. También fue punto de control (GCP10).",
+            "img": "models/frigorifico-rn11/verificacion/p10.jpg"
+          },
+          {
+            "id": "P13",
+            "texto": "Esquina de otra tapa de hormigón. No se usó en el procesamiento: es un punto de chequeo independiente.",
+            "img": "models/frigorifico-rn11/verificacion/p13.jpg"
+          }
+        ],
+        "capturas": [
+          {
+            "src": "models/frigorifico-rn11/verificacion/webodm-p13-p2.jpg",
+            "alt": "Medición P13 → P2 en WebODM: 53,63 m"
+          },
+          {
+            "src": "models/frigorifico-rn11/verificacion/webodm-p2-p10.jpg",
+            "alt": "Medición P2 → P10 en WebODM: 91,55 m"
+          },
+          {
+            "src": "models/frigorifico-rn11/verificacion/webodm-p13-p10.jpg",
+            "alt": "Medición P13 → P10 en WebODM: 107,16 m"
+          }
+        ],
+        "analisis": [
+          [
+            "El modelo mide lo mismo que el GNSS",
+            "Las tres distancias coinciden con las medidas en campo con diferencias de 2 a 4 cm en tramos de 54 a 107 m, es decir, menos de 0,05 % de la longitud."
+          ],
+          [
+            "La prueba independiente también da bien",
+            "P13 no participó del ajuste del modelo. Los dos tramos que lo usan dan +2,4 y +4,0 cm, del mismo orden que el tramo entre dos puntos de control (+2,2 cm)."
+          ],
+          [
+            "Se mide en 3D",
+            "WebODM mide la distancia real en el espacio. En el tramo P2 → P10, con 6,6 m de desnivel, la distancia en planta es 91,29 m y la 3D 91,53 m: el valor del modelo (91,55 m) coincide con la 3D."
+          ],
+          [
+            "Una diferencia chica y sistemática",
+            "Las tres medidas del modelo dan un poco más largas. Entre 0,4 y 0,9 cm se explican por la proyección: WebODM mide sobre UTM 20S y AutoCAD sobre Gauss-Krüger faja 5, que en esta zona deforman las distancias distinto. El resto está dentro de lo que se puede apuntar a mano sobre el modelo (pixel de 0,97 cm)."
+          ]
+        ],
+        "conclusion": "Las distancias medidas sobre el modelo difieren de las medidas con GNSS en unos 3 cm de promedio (menos de 0,05 %). Para anteproyectos, cómputos, tasaciones y control de obra, el modelo se puede medir con confianza al nivel de pocos centímetros."
       }
     },
     {
