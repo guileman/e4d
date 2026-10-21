@@ -226,12 +226,12 @@
       },
       "verificacion": {
         "titulo": "Verificación de distancias en campo",
-        "intro": "Para comprobar que las medidas del modelo coinciden con la realidad, se midieron con GNSS RTK (Emlid Reach RS2) tres puntos del predio y se calcularon sus distancias en AutoCAD. Después se midieron las mismas distancias sobre el modelo 3D en WebODM y se compararon.",
+        "intro": "Para comprobar que las medidas del modelo coinciden con la realidad, se midieron con GNSS RTK (Emlid Reach RS2) cinco puntos del predio y se calcularon sus distancias en AutoCAD. Después se midieron las mismas distancias sobre el modelo 3D en WebODM y se compararon.",
         "kpis": [
           [
-            "≈ 3 cm",
-            "Error medio (RMS)",
-            "3 tramos de 54 a 107 m"
+            "≈ 3,3 cm",
+            "Error en tramos de verificación",
+            "RMS de los tramos con P13"
           ],
           [
             "< 0,05 %",
@@ -247,42 +247,60 @@
         "tabla": [
           [
             "P13 → P2",
+            "Verificación (chequeo → GCP)",
             "53,606 m",
             "53,63 m",
             "+2,4 cm",
             "0,045 %"
           ],
           [
-            "P2 → P10",
-            "91,528 m",
-            "91,55 m",
-            "+2,2 cm",
-            "0,024 %"
-          ],
-          [
             "P13 → P10",
+            "Verificación (chequeo → GCP)",
             "107,120 m",
             "107,16 m",
             "+4,0 cm",
             "0,037 %"
+          ],
+          [
+            "P2 → P10",
+            "Entre GCP (referencia)",
+            "91,528 m",
+            "91,55 m",
+            "+2,2 cm",
+            "0,024 %"
           ]
         ],
         "nota_tabla": "Distancias 3D (incluyen el desnivel). Coordenadas GNSS en POSGAR 2007 · Gauss-Krüger faja 5.",
         "puntos": [
           {
+            "id": "P13",
+            "tipo": "Chequeo · no GCP",
+            "texto": "Esquina de una tapa de hormigón. No se usó en el procesamiento: es el punto de verificación independiente.",
+            "img": "models/frigorifico-rn11/verificacion/p13.jpg"
+          },
+          {
             "id": "P2",
-            "texto": "Esquina de una tapa de hormigón, a nivel del piso. También se usó como punto de control (GCP2) en el procesamiento.",
+            "tipo": "GCP2",
+            "texto": "Esquina de una tapa de hormigón, a nivel del piso.",
             "img": "models/frigorifico-rn11/verificacion/p2.jpg"
           },
           {
+            "id": "P4",
+            "tipo": "GCP4",
+            "texto": "Esquina de una tapa metálica en el patio de asfalto.",
+            "img": "models/frigorifico-rn11/verificacion/p4.jpg"
+          },
+          {
             "id": "P10",
-            "texto": "Dado de hormigón sobre una plataforma elevada, unos 6,6 m por encima del piso. También fue punto de control (GCP10).",
+            "tipo": "GCP10",
+            "texto": "Dado de hormigón sobre una plataforma elevada, unos 6,6 m por encima del piso.",
             "img": "models/frigorifico-rn11/verificacion/p10.jpg"
           },
           {
-            "id": "P13",
-            "texto": "Esquina de otra tapa de hormigón. No se usó en el procesamiento: es un punto de chequeo independiente.",
-            "img": "models/frigorifico-rn11/verificacion/p13.jpg"
+            "id": "P12",
+            "tipo": "GCP12",
+            "texto": "Borde de un muro en la terraza, unos 5 m por encima del piso.",
+            "img": "models/frigorifico-rn11/verificacion/p12.jpg"
           }
         ],
         "capturas": [
@@ -291,33 +309,45 @@
             "alt": "Medición P13 → P2 en WebODM: 53,63 m"
           },
           {
-            "src": "models/frigorifico-rn11/verificacion/webodm-p2-p10.jpg",
-            "alt": "Medición P2 → P10 en WebODM: 91,55 m"
-          },
-          {
             "src": "models/frigorifico-rn11/verificacion/webodm-p13-p10.jpg",
             "alt": "Medición P13 → P10 en WebODM: 107,16 m"
+          },
+          {
+            "src": "models/frigorifico-rn11/verificacion/webodm-p2-p10.jpg",
+            "alt": "Medición P2 → P10 en WebODM: 91,55 m"
           }
         ],
         "analisis": [
           [
-            "El modelo mide lo mismo que el GNSS",
-            "Las tres distancias coinciden con las medidas en campo con diferencias de 2 a 4 cm en tramos de 54 a 107 m, es decir, menos de 0,05 % de la longitud."
+            "La prueba independiente da bien",
+            "Los dos tramos que parten de P13, el único punto que no se usó para ajustar el modelo, dan +2,4 y +4,0 cm en 54 y 107 m: menos de 0,05 % de la longitud."
           ],
           [
-            "La prueba independiente también da bien",
-            "P13 no participó del ajuste del modelo. Los dos tramos que lo usan dan +2,4 y +4,0 cm, del mismo orden que el tramo entre dos puntos de control (+2,2 cm)."
+            "Entre GCP, como era de esperar",
+            "El tramo P2 → P10, entre dos puntos de control, da +2,2 cm. Sirve de referencia, pero no es una verificación independiente."
           ],
           [
             "Se mide en 3D",
-            "WebODM mide la distancia real en el espacio. En el tramo P2 → P10, con 6,6 m de desnivel, la distancia en planta es 91,29 m y la 3D 91,53 m: el valor del modelo (91,55 m) coincide con la 3D."
+            "WebODM mide la distancia real en el espacio. En P2 → P10, con 6,6 m de desnivel, la distancia en planta es 91,29 m y la 3D 91,53 m: el modelo (91,55 m) coincide con la 3D."
           ],
           [
             "Una diferencia chica y sistemática",
-            "Las tres medidas del modelo dan un poco más largas. Entre 0,4 y 0,9 cm se explican por la proyección: WebODM mide sobre UTM 20S y AutoCAD sobre Gauss-Krüger faja 5, que en esta zona deforman las distancias distinto. El resto está dentro de lo que se puede apuntar a mano sobre el modelo (pixel de 0,97 cm)."
+            "Las medidas del modelo dan un poco más largas. Entre 0,4 y 0,9 cm se explican por la proyección (WebODM mide en UTM 20S y AutoCAD en Gauss-Krüger faja 5). El resto está dentro de lo que se puede apuntar a mano sobre un pixel de 0,97 cm."
           ]
         ],
-        "conclusion": "Las distancias medidas sobre el modelo difieren de las medidas con GNSS en unos 3 cm de promedio (menos de 0,05 %). Para anteproyectos, cómputos, tasaciones y control de obra, el modelo se puede medir con confianza al nivel de pocos centímetros."
+        "conclusion": "En los tramos de verificación independiente, las distancias del modelo difieren de las medidas con GNSS en unos 3 cm (menos de 0,05 %). Para confirmarlo con más fuerza, el próximo paso es medir más puntos de chequeo que no se usen como control.",
+        "aviso": {
+          "titulo": "Qué puntos sirven para verificar",
+          "texto": "Cuatro de los cinco puntos (P2, P4, P10 y P12) se usaron como puntos de control (GCP) para ajustar el modelo, así que el modelo ya está \"atado\" a ellos: una distancia entre dos GCP casi siempre va a dar bien y no prueba demasiado. La verificación verdadera es con puntos que no se usaron en el procesamiento. En este relevamiento ese punto es P13, por eso los tramos que lo incluyen son la prueba independiente."
+        },
+        "tabla_cols": [
+          "Tramo",
+          "Tipo",
+          "GNSS · AutoCAD",
+          "Modelo · WebODM",
+          "Diferencia",
+          "Relativo"
+        ]
       }
     },
     {
