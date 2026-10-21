@@ -117,7 +117,7 @@
           {
             "tipo": "ok",
             "titulo": "Distancias verificadas en campo",
-            "texto": "Tres distancias de 54 a 107 m medidas sobre el modelo coinciden con las medidas con GNSS RTK con diferencias de 2 a 4 cm (≈ 3 cm RMS, menos de 0,05 %), incluido un punto de chequeo que no se usó en el procesamiento."
+            "texto": "Tres distancias de 54 a 107 m medidas sobre el modelo, con al menos un extremo en un punto de chequeo que no se usó en el procesamiento, coinciden con las medidas con GNSS RTK con diferencias de 2 a 8 cm (≈ 5 cm RMS, como máximo 0,1 %)."
           },
           {
             "tipo": "atencion",
@@ -226,28 +226,28 @@
       },
       "verificacion": {
         "titulo": "Verificación de distancias en campo",
-        "intro": "Para comprobar que las medidas del modelo coinciden con la realidad, se midieron con GNSS RTK (Emlid Reach RS2) cinco puntos del predio y se calcularon sus distancias en AutoCAD. Después se midieron las mismas distancias sobre el modelo 3D en WebODM y se compararon.",
+        "intro": "Para comprobar que las medidas del modelo coinciden con la realidad, se midieron puntos del predio con GNSS RTK (Emlid Reach RS2) y se calcularon sus distancias en AutoCAD. Después se midieron las mismas distancias sobre el modelo 3D en WebODM y se compararon.",
         "kpis": [
           [
-            "≈ 3,3 cm",
-            "Error en tramos de verificación",
-            "RMS de los tramos con P13"
+            "≈ 5 cm",
+            "Error RMS",
+            "3 tramos de verificación"
           ],
           [
-            "< 0,05 %",
+            "≈ 0,1 %",
             "Error relativo",
             "como máximo"
           ],
           [
-            "1 : 2.700",
+            "1 : 950",
             "Peor caso",
-            "4 cm en 107 m"
+            "7,7 cm en 73 m"
           ]
         ],
         "tabla": [
           [
             "P13 → P2",
-            "Verificación (chequeo → GCP)",
+            "GCP – no GCP",
             "53,606 m",
             "53,63 m",
             "+2,4 cm",
@@ -255,19 +255,19 @@
           ],
           [
             "P13 → P10",
-            "Verificación (chequeo → GCP)",
+            "GCP – no GCP",
             "107,120 m",
             "107,16 m",
             "+4,0 cm",
             "0,037 %"
           ],
           [
-            "P2 → P10",
-            "Entre GCP (referencia)",
-            "91,528 m",
-            "91,55 m",
-            "+2,2 cm",
-            "0,024 %"
+            "P8 → P13",
+            "no GCP – no GCP",
+            "72,867 m",
+            "72,79 m",
+            "−7,7 cm",
+            "0,106 %"
           ]
         ],
         "nota_tabla": "Distancias 3D (incluyen el desnivel). Coordenadas GNSS en POSGAR 2007 · Gauss-Krüger faja 5.",
@@ -275,8 +275,14 @@
           {
             "id": "P13",
             "tipo": "Chequeo · no GCP",
-            "texto": "Esquina de una tapa de hormigón. No se usó en el procesamiento: es el punto de verificación independiente.",
+            "texto": "Esquina de una tapa de hormigón, a nivel del piso.",
             "img": "models/frigorifico-rn11/verificacion/p13.jpg"
+          },
+          {
+            "id": "P8",
+            "tipo": "Chequeo · no GCP",
+            "texto": "Esquina de una base de hormigón sobre una plataforma, unos 4 m por encima del piso.",
+            "img": "models/frigorifico-rn11/verificacion/p8.jpg"
           },
           {
             "id": "P2",
@@ -285,16 +291,16 @@
             "img": "models/frigorifico-rn11/verificacion/p2.jpg"
           },
           {
-            "id": "P4",
-            "tipo": "GCP4",
-            "texto": "Esquina de una tapa metálica en el patio de asfalto.",
-            "img": "models/frigorifico-rn11/verificacion/p4.jpg"
-          },
-          {
             "id": "P10",
             "tipo": "GCP10",
             "texto": "Dado de hormigón sobre una plataforma elevada, unos 6,6 m por encima del piso.",
             "img": "models/frigorifico-rn11/verificacion/p10.jpg"
+          },
+          {
+            "id": "P4",
+            "tipo": "GCP4",
+            "texto": "Esquina de una tapa metálica en el patio de asfalto.",
+            "img": "models/frigorifico-rn11/verificacion/p4.jpg"
           },
           {
             "id": "P12",
@@ -313,32 +319,32 @@
             "alt": "Medición P13 → P10 en WebODM: 107,16 m"
           },
           {
-            "src": "models/frigorifico-rn11/verificacion/webodm-p2-p10.jpg",
-            "alt": "Medición P2 → P10 en WebODM: 91,55 m"
+            "src": "models/frigorifico-rn11/verificacion/webodm-p8-p13.jpg",
+            "alt": "Medición P8 → P13 en WebODM: 72,79 m"
           }
         ],
         "analisis": [
           [
-            "La prueba independiente da bien",
-            "Los dos tramos que parten de P13, el único punto que no se usó para ajustar el modelo, dan +2,4 y +4,0 cm en 54 y 107 m: menos de 0,05 % de la longitud."
+            "Entre GCP y punto de chequeo",
+            "Los dos tramos que unen P13 con un punto de control dan +2,4 y +4,0 cm en 54 y 107 m: menos de 0,05 % de la longitud."
           ],
           [
-            "Entre GCP, como era de esperar",
-            "El tramo P2 → P10, entre dos puntos de control, da +2,2 cm. Sirve de referencia, pero no es una verificación independiente."
+            "Entre dos puntos de chequeo",
+            "P8 → P13 no toca ningún punto de control: es la prueba más exigente. Da −7,7 cm en 73 m (0,11 %). P8 está sobre una plataforma, 4,7 m más alto que P13, y en altura el modelo es menos preciso (unos 10 cm, según el informe de calidad)."
           ],
           [
             "Se mide en 3D",
-            "WebODM mide la distancia real en el espacio. En P2 → P10, con 6,6 m de desnivel, la distancia en planta es 91,29 m y la 3D 91,53 m: el modelo (91,55 m) coincide con la 3D."
+            "WebODM mide la distancia real en el espacio, no la proyectada en planta. Por eso se comparan con las distancias 3D de AutoCAD, que incluyen el desnivel entre los puntos."
           ],
           [
-            "Una diferencia chica y sistemática",
-            "Las medidas del modelo dan un poco más largas. Entre 0,4 y 0,9 cm se explican por la proyección (WebODM mide en UTM 20S y AutoCAD en Gauss-Krüger faja 5). El resto está dentro de lo que se puede apuntar a mano sobre un pixel de 0,97 cm."
+            "Dentro de lo esperable",
+            "Las diferencias quedan entre 2 y 8 cm. Para un modelo con pixel de 0,97 cm, apuntando a mano esquinas en el modelo 3D y con la altimetría como punto más débil, es el orden de error esperable."
           ]
         ],
-        "conclusion": "En los tramos de verificación independiente, las distancias del modelo difieren de las medidas con GNSS en unos 3 cm (menos de 0,05 %). Para confirmarlo con más fuerza, el próximo paso es medir más puntos de chequeo que no se usen como control.",
+        "conclusion": "En los tramos de verificación, las distancias medidas sobre el modelo difieren de las medidas con GNSS entre 2 y 8 cm (≈ 5 cm RMS, como máximo 0,1 %). Para anteproyectos, cómputos, tasaciones y control de obra, el modelo se puede medir con confianza al nivel de pocos centímetros.",
         "aviso": {
           "titulo": "Qué puntos sirven para verificar",
-          "texto": "Cuatro de los cinco puntos (P2, P4, P10 y P12) se usaron como puntos de control (GCP) para ajustar el modelo, así que el modelo ya está \"atado\" a ellos: una distancia entre dos GCP casi siempre va a dar bien y no prueba demasiado. La verificación verdadera es con puntos que no se usaron en el procesamiento. En este relevamiento ese punto es P13, por eso los tramos que lo incluyen son la prueba independiente."
+          "texto": "Algunos puntos (P2, P4, P10 y P12) se usaron como puntos de control (GCP) para ajustar el modelo, así que el modelo ya está \"atado\" a ellos. La verificación verdadera es con puntos que no se usaron en el procesamiento: P8, P11 y P13. Por eso se comparan dos tipos de tramos: entre un GCP y un punto de chequeo, y —la prueba más exigente— entre dos puntos de chequeo."
         },
         "tabla_cols": [
           "Tramo",

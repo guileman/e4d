@@ -549,3 +549,7 @@ body.viewer-page { height: 100dvh; overflow: hidden; }
 .ver-tag.ind { border-color: var(--accent); color: var(--accent); }
 @media (max-width: 1100px) { .ver-pts { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 860px) { .ver-pts { grid-template-columns: repeat(2, 1fr); } }
+.ver-tbl tr.ver-top td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.ver-pts { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 1100px) { .ver-pts { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 860px) { .ver-pts { grid-template-columns: repeat(2, 1fr); } }

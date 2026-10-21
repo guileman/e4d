@@ -617,7 +617,7 @@ async function initProyecto() {
       <div class="q-kpis">${V.kpis.map(([v, l, n]) => `<div class="q-kpi"><b>${esc(v)}</b><span>${esc(l)}</span>${n ? `<small>${esc(n)}</small>` : ''}</div>`).join('')}</div>
       ${V.aviso ? `<div class="ver-aviso"><h3>${esc(V.aviso.titulo)}</h3><p>${esc(V.aviso.texto)}</p></div>` : ''}
       <div class="ver-tbl-wrap"><table class="ver-tbl"><thead><tr>${(V.tabla_cols || ['Tramo', 'GNSS · AutoCAD', 'Modelo · WebODM', 'Diferencia', 'Relativo']).map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead>
-        <tbody>${V.tabla.map((r) => `<tr class="${/^Verificaci/.test(r[1] || '') ? 'ver-ind' : ''}">${r.map((x, i) => `<td${i === r.length - 2 ? ' class="ver-dif"' : ''}>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+        <tbody>${V.tabla.map((r) => `<tr class="${/^no GCP – no GCP/.test(r[1] || '') ? 'ver-ind ver-top' : 'ver-ind'}">${r.map((x, i) => `<td${i === r.length - 2 ? ' class="ver-dif"' : ''}>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>
         <p class="spec-note">${esc(V.nota_tabla)}</p></div>
       <h3 class="ver-h3">Los puntos medidos</h3>
       <div class="ver-pts">${V.puntos.map((q) => `<figure>${ph(q.img, `Punto ${q.id}`)}<figcaption><b>${esc(q.id)}</b>${q.tipo ? `<span class="ver-tag${/no GCP/.test(q.tipo) ? ' ind' : ''}">${esc(q.tipo)}</span>` : ''} ${esc(q.texto)}</figcaption></figure>`).join('')}</div>
