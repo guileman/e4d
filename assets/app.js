@@ -70,6 +70,7 @@ async function initGallery() {
   applySite(data.sitio);
   renderEquipos(data.equipos);
   renderServicios(data.servicios);
+  renderDesarrollos(data.desarrollos);
   renderContacto(data.sitio?.contacto);
   const modelos = data.modelos;
 
@@ -470,6 +471,7 @@ function equipoLink(m) {
 
 const urlCaso = (id) => `casos/${encodeURIComponent(id)}/`;
 const urlEquipo = (id) => `equipos/${encodeURIComponent(id)}/`;
+const urlDesarrollo = (d) => d.enlace || `desarrollos/${encodeURIComponent(d.id)}/`;
 
 /* ---------------- Página de equipo ---------------- */
 async function initEquipo() {
@@ -547,6 +549,60 @@ function bindLightbox(root) {
   }
   root.querySelectorAll('.eq-ph').forEach((b) => { b.onclick = () => {
     lb.querySelector('img').src = b.dataset.src; lb.querySelector('p').textContent = b.dataset.alt; lb.hidden = false; }; });
+}
+
+
+/* ---------------- Desarrollos propios ---------------- */
+function renderDesarrollos(lista) {
+  const sec = document.getElementById('desarrollos');
+  if (!sec || !lista?.length) return;
+  document.getElementById('dv-grid').innerHTML = lista.map((d) => `
+    <a class="dv-card" href="${esc(urlDesarrollo(d))}">
+      <div class="dv-img${d.portada && /desarrollos\//.test(d.portada) ? ' phone' : ''}">${d.portada ? `<img src="${esc(d.portada)}" alt="${esc(d.nombre)}" loading="lazy">` : ''}</div>
+      <div class="dv-body">
+        <div class="eyebrow">${esc(d.tipo || '')}</div>
+        <h3>${esc(d.nombre)}${d.estado ? ` <span class="eq-badge">${esc(d.estado)}</span>` : ''}</h3>
+        <p>${esc(d.resumen || '')}</p>
+        <span class="dv-more">Ver el desarrollo →</span>
+      </div>
+    </a>`).join('');
+  sec.hidden = false;
+}
+
+async function initDesarrollo() {
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const root = document.getElementById('pj');
+  const qs = new URLSearchParams(location.search);
+  const id = document.body.dataset.id || qs.get('d');
+  let data;
+  try { data = await loadData(); } catch (err) { root.innerHTML = '<p class="empty">No se pudo cargar la información.</p>'; return; }
+  const d = (data.desarrollos || []).find((x) => x.id === id && !x.enlace);
+  if (!document.body.dataset.id && d && !qs.has('prerender')) { location.replace(urlDesarrollo(d)); return; }
+  applySite(data.sitio);
+  renderContacto(data.sitio?.contacto);
+  if (!d) { root.innerHTML = '<p class="empty">Desarrollo no encontrado.<br><br><a class="btn" href="./#desarrollos">Volver</a></p>'; return; }
+  document.title = `${d.nombre} · ${d.tipo} · ${data.sitio?.titulo || ''}`;
+  setMeta(d.intro || d.resumen, `https://e4d.com.ar/${urlDesarrollo(d)}`, d.portada);
+  const c = data.sitio?.contacto;
+  root.innerHTML = `
+    <section class="pj-hero dv-hero">
+      <div>
+        <div class="eyebrow">${esc(d.tipo || 'Desarrollo propio')}${d.estado ? ` · <span class="eq-badge">${esc(d.estado)}</span>` : ''}</div>
+        <h1>${esc(d.nombre)}</h1>
+        <p class="pj-intro">${esc(d.intro || d.resumen || '')}</p>
+        <div class="hero-actions"><a class="btn" href="#funciones">Funciones</a><a class="btn ghost" href="#limitaciones">Estado actual</a></div>
+      </div>
+      <div class="dv-phones">${(d.capturas || []).map((f) => `<figure><button class="eq-ph" data-src="${esc(f.src)}" data-alt="${esc(f.alt)}"><img src="${esc(f.src)}" alt="${esc(f.alt)}"></button><figcaption>${esc(f.titulo)}</figcaption></figure>`).join('')}</div>
+    </section>
+    ${d.kpis ? `<section class="kpi-strip k${d.kpis.length}">${d.kpis.map(([v, k]) => `<div><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}</section>` : ''}
+    <section class="pj-sec" id="funciones"><div class="eyebrow">Qué hace</div><h2>Funciones</h2>
+      <div class="dv-groups">${(d.grupos || []).map((g) => `<article class="pj-card"><h3>${esc(g.titulo)}</h3><ul>${g.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></article>`).join('')}</div>
+    </section>
+    ${d.limitaciones?.length ? `<section class="pj-sec" id="limitaciones"><div class="eyebrow">Estado actual</div><h2>En desarrollo</h2>
+      <div class="ver-aviso"><h3>Limitaciones de la versión actual</h3><ul class="dv-lim">${d.limitaciones.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></section>` : ''}
+    <section class="pj-sec pj-cta"><div><h2>¿Querés saber más?</h2><p>Escribime y te cuento cómo usamos ${esc(d.nombre)} en el campo.</p></div>
+      <div class="pj-cta-btns">${contactButtons(c, `Hola Guillermo, vi ${d.nombre} en tu web y quería consultarte.`)}</div></section>`;
+  bindLightbox(root);
 }
 
 /* ---------------- Página de proyecto ---------------- */

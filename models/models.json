@@ -978,5 +978,147 @@
       "titulo": "Puntos de control GNSS",
       "texto": "Medición en campo con receptores GNSS de precisión centimétrica, para que los modelos también tengan precisión centimétrica y queden georreferenciados en coordenadas reales."
     }
+  ],
+  "desarrollos": [
+    {
+      "id": "topognss",
+      "nombre": "TopoGNSS",
+      "tipo": "App de campo para receptores GNSS",
+      "estado": "En desarrollo",
+      "resumen": "Aplicación para celular que maneja los receptores GNSS Emlid en el campo: relevamiento, replanteo y cálculos topográficos, con mapa y sin necesidad de Internet.",
+      "portada": "assets/desarrollos/topognss-replanteo.jpg",
+      "intro": "Una app propia para trabajar en el campo con los receptores GNSS Emlid: se conecta al equipo, muestra la calidad de la posición en tiempo real y permite relevar puntos, replantear y hacer los cálculos topográficos de todos los días, en coordenadas POSGAR 2007 y sin depender de Internet.",
+      "kpis": [
+        [
+          "Wi-Fi · BT",
+          "Conexión con el receptor"
+        ],
+        [
+          "2 cm",
+          "Tolerancia mínima de replanteo"
+        ],
+        [
+          "POSGAR 07",
+          "Fajas 1 a 7, UTM y plano local"
+        ],
+        [
+          "Offline",
+          "Mapa y datos sin Internet"
+        ]
+      ],
+      "capturas": [
+        {
+          "src": "assets/desarrollos/topognss-receptores.jpg",
+          "titulo": "Receptores",
+          "alt": "Pantalla Receptores: receptor conectado por Wi-Fi con solución FIX, 28 satélites y precisión de 1,4 cm horizontal y 1,0 cm vertical"
+        },
+        {
+          "src": "assets/desarrollos/topognss-replanteo.jpg",
+          "titulo": "Replanteo",
+          "alt": "Pantalla Replanteo: flecha de dirección hacia el punto C002 con distancia, avanzar, derecha y relleno"
+        },
+        {
+          "src": "assets/desarrollos/topognss-calculo.jpg",
+          "titulo": "Cálculo",
+          "alt": "Pantalla Cálculo: superficie y perímetro de un polígono de cuatro vértices en Gauss-Krüger"
+        }
+      ],
+      "grupos": [
+        {
+          "titulo": "Conexión con el receptor",
+          "items": [
+            "Por Wi-Fi o Bluetooth, desde una lista de receptores disponibles: se conecta tocándolo.",
+            "Empareja equipos Bluetooth desde la misma app.",
+            "Lee datos en formato NMEA o LLH de Emlid.",
+            "Reconexión automática y aviso claro cuando hay problemas: puerto, formato o falta de datos.",
+            "Sigue conectada con la pantalla apagada."
+          ]
+        },
+        {
+          "titulo": "Estado en pantalla",
+          "items": [
+            "Tipo de solución (FIX, FLOAT, DGPS, SINGLE), con colores.",
+            "Satélites, precisión horizontal y vertical, y edad de la corrección.",
+            "Detalle técnico y consola de datos para diagnóstico."
+          ]
+        },
+        {
+          "titulo": "Mapa",
+          "items": [
+            "Pantalla principal, a todo el alto.",
+            "Capas: calles, satélite, híbrido, topográfica o sin mapa.",
+            "Funciona sin Internet con las zonas ya vistas (hasta 600 MB).",
+            "Muestra los puntos del proyecto y tu posición con el círculo de precisión."
+          ]
+        },
+        {
+          "titulo": "Relevamiento",
+          "items": [
+            "Medición de puntos promediando 1, 5, 10 o 30 épocas.",
+            "Filtros: exigir FIX y precisión máxima.",
+            "Altura de antena.",
+            "Nombres que avanzan solos, con código o descripción."
+          ]
+        },
+        {
+          "titulo": "Replanteo",
+          "items": [
+            "De puntos y de ejes.",
+            "Distancia, avanzar/retroceder, derecha/izquierda y corte/relleno.",
+            "Flecha de dirección y radar para la aproximación final.",
+            "Aviso sonoro y vibración al entrar en la tolerancia (2, 5 o 10 cm).",
+            "Rumbo por brújula o por GNSS al caminar.",
+            "Se puede elegir el punto tocándolo en el mapa."
+          ]
+        },
+        {
+          "titulo": "Cálculos",
+          "items": [
+            "Distancia horizontal e inclinada, desnivel, pendiente, azimut y ángulos.",
+            "Superficie y perímetro.",
+            "Punto medio, prolongación, estación/desplazamiento e intersecciones.",
+            "Resección de 3 puntos, curvas y poligonal con ajuste."
+          ]
+        },
+        {
+          "titulo": "Proyectos y coordenadas",
+          "items": [
+            "POSGAR 2007 (fajas 1 a 7), UTM y plano local de obra.",
+            "Datos catastrales por proyecto: circunscripción, sección, manzana, parcela y partida."
+          ]
+        },
+        {
+          "titulo": "Puntos y datos",
+          "items": [
+            "Lista con filtros por tipo y foto georreferenciada por punto.",
+            "Carga manual por coordenadas.",
+            "Importa DXF y KML/KMZ.",
+            "Exporta CSV y un reporte de replanteo en PDF."
+          ]
+        },
+        {
+          "titulo": "Otros",
+          "items": [
+            "Plomada virtual.",
+            "Tema claro u oscuro.",
+            "Funciona sin Internet."
+          ]
+        }
+      ],
+      "limitaciones": [
+        "Con datos LLH no hay cota sobre el nivel del mar: para tenerla, el receptor tiene que enviar NMEA.",
+        "Todavía no importa CSV/TXT ni exporta a DXF o KML.",
+        "Está en desarrollo y probado sobre todo con el Emlid Reach RS2."
+      ]
+    },
+    {
+      "id": "rover-1",
+      "nombre": "Rover 1",
+      "tipo": "Drone de mapeo con RTK",
+      "estado": "En desarrollo",
+      "resumen": "Cuadricóptero de armado propio con GPS RTK a bordo, cámara Sony A6000 y unos 35 minutos de autonomía proyectada.",
+      "portada": "assets/equipos/rover1-frente.jpg",
+      "enlace": "equipos/rover-1/"
+    }
   ]
 }

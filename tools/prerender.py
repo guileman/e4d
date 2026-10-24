@@ -75,6 +75,14 @@ async def main():
             os.makedirs(out, exist_ok=True)
             open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(limpiar(html, e['id']))
             hechos.append(f"equipos/{e['id']}/")
+        for dv in d.get('desarrollos', []):
+            if dv.get('enlace'):
+                continue
+            html = await capturar(pg, f"{L}desarrollo.html?d={dv['id']}&prerender=1")
+            out = os.path.join(RAIZ, 'desarrollos', dv['id'])
+            os.makedirs(out, exist_ok=True)
+            open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(limpiar(html, dv['id']))
+            hechos.append(f"desarrollos/{dv['id']}/")
 
         # Portada: dejar escritas las secciones que arma el JavaScript
         await pg.goto(L)
@@ -87,13 +95,13 @@ async def main():
     ruta = os.path.join(RAIZ, 'index.html')
     fuente = open(ruta, encoding='utf-8').read()
     soup = BeautifulSoup(fuente, 'html.parser')
-    for ident in ('grid', 'sv-grid', 'eq-grid', 'ct-btns', 'ct-nombre', 'stat-count', 'stat-photos', 'stat-last'):
+    for ident in ('grid', 'sv-grid', 'dv-grid', 'eq-grid', 'ct-btns', 'ct-nombre', 'stat-count', 'stat-photos', 'stat-last'):
         dst, src = soup.find(id=ident), vivo.find(id=ident)
         if dst is not None and src is not None:
             dst.clear()
             for ch in list(src.contents):
                 dst.append(ch)
-    for ident in ('servicios', 'equipos', 'contacto'):
+    for ident in ('servicios', 'desarrollos', 'equipos', 'contacto'):
         el = soup.find(id=ident)
         if el is not None and el.has_attr('hidden'):
             del el['hidden']
