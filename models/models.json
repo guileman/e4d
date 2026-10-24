@@ -981,12 +981,12 @@
   ],
   "desarrollos": [
     {
-      "id": "topognss",
-      "nombre": "TopoGNSS",
-      "tipo": "App de campo para receptores GNSS",
+      "id": "app-gnss",
+      "nombre": "App de campo GNSS",
+      "tipo": "Desarrollo propio · app para celular",
       "estado": "En desarrollo",
       "resumen": "Aplicación para celular que maneja los receptores GNSS Emlid en el campo: relevamiento, replanteo y cálculos topográficos, con mapa y sin necesidad de Internet.",
-      "portada": "assets/desarrollos/topognss-replanteo.jpg",
+      "portada": "assets/desarrollos/app-gnss-replanteo.jpg",
       "intro": "Una app propia para trabajar en el campo con los receptores GNSS Emlid: se conecta al equipo, muestra la calidad de la posición en tiempo real y permite relevar puntos, replantear y hacer los cálculos topográficos de todos los días, en coordenadas POSGAR 2007 y sin depender de Internet.",
       "kpis": [
         [
@@ -1008,17 +1008,17 @@
       ],
       "capturas": [
         {
-          "src": "assets/desarrollos/topognss-receptores.jpg",
+          "src": "assets/desarrollos/app-gnss-receptores.jpg",
           "titulo": "Receptores",
           "alt": "Pantalla Receptores: receptor conectado por Wi-Fi con solución FIX, 28 satélites y precisión de 1,4 cm horizontal y 1,0 cm vertical"
         },
         {
-          "src": "assets/desarrollos/topognss-replanteo.jpg",
+          "src": "assets/desarrollos/app-gnss-replanteo.jpg",
           "titulo": "Replanteo",
           "alt": "Pantalla Replanteo: flecha de dirección hacia el punto C002 con distancia, avanzar, derecha y relleno"
         },
         {
-          "src": "assets/desarrollos/topognss-calculo.jpg",
+          "src": "assets/desarrollos/app-gnss-calculo.jpg",
           "titulo": "Cálculo",
           "alt": "Pantalla Cálculo: superficie y perímetro de un polígono de cuatro vértices en Gauss-Krüger"
         }

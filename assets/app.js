@@ -600,8 +600,8 @@ async function initDesarrollo() {
     </section>
     ${d.limitaciones?.length ? `<section class="pj-sec" id="limitaciones"><div class="eyebrow">Estado actual</div><h2>En desarrollo</h2>
       <div class="ver-aviso"><h3>Limitaciones de la versión actual</h3><ul class="dv-lim">${d.limitaciones.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></section>` : ''}
-    <section class="pj-sec pj-cta"><div><h2>¿Querés saber más?</h2><p>Escribime y te cuento cómo usamos ${esc(d.nombre)} en el campo.</p></div>
-      <div class="pj-cta-btns">${contactButtons(c, `Hola Guillermo, vi ${d.nombre} en tu web y quería consultarte.`)}</div></section>`;
+    <section class="pj-sec pj-cta"><div><h2>¿Querés saber más?</h2><p>Escribime y te cuento más sobre este desarrollo y cómo lo usamos en el campo.</p></div>
+      <div class="pj-cta-btns">${contactButtons(c, `Hola Guillermo, vi la app de campo GNSS en tu web y quería consultarte.`)}</div></section>`;
   bindLightbox(root);
 }
 
