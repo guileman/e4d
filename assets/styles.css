@@ -599,3 +599,6 @@ body.viewer-page { height: 100dvh; overflow: hidden; }
 .dv-shots .eq-ph img { height: auto; }
 .dv-shots figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
 .dv-shots figcaption b { display: block; color: var(--text, inherit); font-size: 14px; margin-bottom: 2px; }
+
+.dv-phones figcaption b { display: block; font-size: 13px; color: var(--accent); margin-bottom: 4px; }
+.dv-phones figcaption { text-transform: none; letter-spacing: 0; font-family: inherit; line-height: 1.4; }

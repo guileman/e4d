@@ -592,7 +592,7 @@ async function initDesarrollo() {
         <p class="pj-intro">${esc(d.intro || d.resumen || '')}</p>
         <div class="hero-actions"><a class="btn" href="#funciones">Funciones</a><a class="btn ghost" href="#limitaciones">Estado actual</a></div>
       </div>
-      <div class="dv-phones">${(d.capturas || []).map((f) => `<figure><button class="eq-ph" data-src="${esc(f.src)}" data-alt="${esc(f.alt)}"><img src="${esc(f.src)}" alt="${esc(f.alt)}"></button><figcaption>${esc(f.titulo)}</figcaption></figure>`).join('')}</div>
+      <div class="dv-phones">${(d.capturas || []).map((f) => `<figure><button class="eq-ph" data-src="${esc(f.src)}" data-alt="${esc(f.alt)}"><img src="${esc(f.src)}" alt="${esc(f.alt)}"></button><figcaption><b>${esc(f.titulo)}</b>${esc(f.texto || '')}</figcaption></figure>`).join('')}</div>
     </section>
     ${d.kpis ? `<section class="kpi-strip k${d.kpis.length}">${d.kpis.map(([v, k]) => `<div><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}</section>` : ''}
     <section class="pj-sec" id="funciones"><div class="eyebrow">Qué hace</div><h2>Funciones</h2>

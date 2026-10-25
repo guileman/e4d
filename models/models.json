@@ -1010,17 +1010,20 @@
         {
           "src": "assets/desarrollos/app-gnss-receptores.jpg",
           "titulo": "Receptores",
-          "alt": "Pantalla Receptores: receptor conectado por Wi-Fi con solución FIX, 28 satélites y precisión de 1,4 cm horizontal y 1,0 cm vertical"
+          "alt": "Pantalla Receptores: receptor conectado por Wi-Fi con solución FIX, 28 satélites y precisión de 1,4 cm horizontal y 1,0 cm vertical",
+          "texto": "Receptor conectado por Wi-Fi con solución FIX, 28 satélites y precisión de 1,4 cm horizontal y 1,0 cm vertical."
         },
         {
           "src": "assets/desarrollos/app-gnss-replanteo.jpg",
           "titulo": "Replanteo",
-          "alt": "Pantalla Replanteo: flecha de dirección hacia el punto C002 con distancia, avanzar, derecha y relleno"
+          "alt": "Pantalla Replanteo: flecha de dirección hacia el punto C002 con distancia, avanzar, derecha y relleno",
+          "texto": "Flecha de dirección hacia el punto, con distancia, avanzar/retroceder, derecha/izquierda y corte/relleno."
         },
         {
           "src": "assets/desarrollos/app-gnss-calculo.jpg",
           "titulo": "Cálculo",
-          "alt": "Pantalla Cálculo: superficie y perímetro de un polígono de cuatro vértices en Gauss-Krüger"
+          "alt": "Pantalla Cálculo: superficie y perímetro de un polígono de cuatro vértices en Gauss-Krüger",
+          "texto": "Superficie y perímetro de un polígono de cuatro vértices en Gauss-Krüger."
         }
       ],
       "grupos": [
