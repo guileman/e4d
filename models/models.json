@@ -1109,6 +1109,98 @@
         "Con datos LLH no hay cota sobre el nivel del mar: para tenerla, el receptor tiene que enviar NMEA.",
         "Todavía no importa CSV/TXT ni exporta a DXF o KML.",
         "Está en desarrollo y probado sobre todo con el Emlid Reach RS2."
+      ],
+      "pantallas": [
+        {
+          "titulo": "Receptores y estado",
+          "intro": "Se conecta por Bluetooth o Wi-Fi y muestra en vivo la calidad de la posición: solución FIX, satélites, precisión de 1,4 cm y edad de la corrección. Si el receptor envía solo LLH, avisa que falta la cota y cómo corregirlo.",
+          "items": [
+            {
+              "src": "assets/desarrollos/app-receptor-bluetooth.jpg",
+              "titulo": "Receptor por Bluetooth",
+              "alt": "Pantalla de la app: Receptor por Bluetooth. Solución FIX con 26 satélites, HRMS/VRMS 1,4 / 1,0 cm, altura sobre el nivel del mar y ondulación geoidal.",
+              "texto": "Solución FIX con 26 satélites, HRMS/VRMS 1,4 / 1,0 cm, altura sobre el nivel del mar y ondulación geoidal."
+            },
+            {
+              "src": "assets/desarrollos/app-receptor-wifi-llh.jpg",
+              "titulo": "Receptor por Wi-Fi",
+              "alt": "Pantalla de la app: Receptor por Wi-Fi. Detecta el formato LLH y avisa que no hay cota sobre el nivel del mar; indica cómo cambiarlo a NMEA.",
+              "texto": "Detecta el formato LLH y avisa que no hay cota sobre el nivel del mar; indica cómo cambiarlo a NMEA."
+            }
+          ]
+        },
+        {
+          "titulo": "Cálculo: crear puntos",
+          "intro": "Genera puntos nuevos a partir de otros ya medidos, con vista previa en el mapa antes de guardarlos.",
+          "items": [
+            {
+              "src": "assets/desarrollos/app-calc-punto-medio.jpg",
+              "titulo": "Punto medio",
+              "alt": "Pantalla de la app: Punto medio. Punto exacto entre dos puntos, con E, N y cota promediados.",
+              "texto": "Punto exacto entre dos puntos, con E, N y cota promediados."
+            },
+            {
+              "src": "assets/desarrollos/app-calc-prolongacion.jpg",
+              "titulo": "Prolongación",
+              "alt": "Pantalla de la app: Prolongación. Nuevo punto sobre la alineación de dos puntos, a una distancia indicada (negativa hacia atrás).",
+              "texto": "Nuevo punto sobre la alineación de dos puntos, a una distancia indicada (negativa hacia atrás)."
+            },
+            {
+              "src": "assets/desarrollos/app-calc-estacion-desplazamiento.jpg",
+              "titulo": "Estación / desplazamiento",
+              "alt": "Pantalla de la app: Estación / desplazamiento. Punto a una distancia sobre la línea y un desplazamiento perpendicular.",
+              "texto": "Punto a una distancia sobre la línea y un desplazamiento perpendicular."
+            },
+            {
+              "src": "assets/desarrollos/app-calc-interseccion-acimutes.jpg",
+              "titulo": "Intersección por acimutes",
+              "alt": "Pantalla de la app: Intersección por acimutes. Punto buscado a partir de los acimutes observados desde dos puntos.",
+              "texto": "Punto buscado a partir de los acimutes observados desde dos puntos."
+            },
+            {
+              "src": "assets/desarrollos/app-calc-interseccion-distancias.jpg",
+              "titulo": "Intersección por distancias",
+              "alt": "Pantalla de la app: Intersección por distancias. Punto a distancia conocida de dos puntos; da las dos soluciones simétricas, izquierda y derecha.",
+              "texto": "Punto a distancia conocida de dos puntos; da las dos soluciones simétricas, izquierda y derecha."
+            }
+          ]
+        },
+        {
+          "titulo": "Cálculo: polígonos y superficie",
+          "intro": "Con los vértices elegidos, calcula ángulos, perímetro y superficie en coordenadas Gauss-Krüger.",
+          "items": [
+            {
+              "src": "assets/desarrollos/app-calc-poligono-angulos.jpg",
+              "titulo": "Ángulos en vértices",
+              "alt": "Pantalla de la app: Ángulos en vértices. Poligonal cerrada con ángulo interno y deflexión en cada vértice.",
+              "texto": "Poligonal cerrada con ángulo interno y deflexión en cada vértice."
+            },
+            {
+              "src": "assets/desarrollos/app-calc-superficie.jpg",
+              "titulo": "Superficie y perímetro",
+              "alt": "Pantalla de la app: Superficie y perímetro. Área en m² y hectáreas, perímetro y sentido de giro (Gauss).",
+              "texto": "Área en m² y hectáreas, perímetro y sentido de giro (Gauss)."
+            }
+          ]
+        },
+        {
+          "titulo": "Puntos y replanteo de ejes",
+          "intro": "Cada punto queda clasificado como relevado, calculado (COGO) o replanteado, y se puede replantear sobre un eje con estación y desplazamiento en tiempo real.",
+          "items": [
+            {
+              "src": "assets/desarrollos/app-puntos-lista.jpg",
+              "titulo": "Lista de puntos",
+              "alt": "Pantalla de la app: Lista de puntos. Relevados, COGO y replanteados con coordenadas E/N en POSGAR 2007 faja 5, con filtros por tipo.",
+              "texto": "Relevados, COGO y replanteados con coordenadas E/N en POSGAR 2007 faja 5, con filtros por tipo."
+            },
+            {
+              "src": "assets/desarrollos/app-replanteo-eje.jpg",
+              "titulo": "Replanteo de un eje",
+              "alt": "Pantalla de la app: Replanteo de un eje. Estación 4,19 / 14,00 m y desvío a la izquierda de 0,002 m respecto del eje, con botón para registrar el punto.",
+              "texto": "Estación 4,19 / 14,00 m y desvío a la izquierda de 0,002 m respecto del eje, con botón para registrar el punto."
+            }
+          ]
+        }
       ]
     },
     {

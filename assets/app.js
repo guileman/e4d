@@ -598,6 +598,10 @@ async function initDesarrollo() {
     <section class="pj-sec" id="funciones"><div class="eyebrow">Qué hace</div><h2>Funciones</h2>
       <div class="dv-groups">${(d.grupos || []).map((g) => `<article class="pj-card"><h3>${esc(g.titulo)}</h3><ul>${g.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></article>`).join('')}</div>
     </section>
+    ${d.pantallas?.length ? `<section class="pj-sec" id="pantallas"><div class="eyebrow">En pantalla</div><h2>Así se usa</h2>
+      ${d.pantallas.map((g) => `<div class="dv-scr"><h3>${esc(g.titulo)}</h3><p>${esc(g.intro || '')}</p>
+        <div class="dv-shots">${g.items.map((f) => `<figure><button class="eq-ph" data-src="${esc(f.src)}" data-alt="${esc(f.alt)}"><img src="${esc(f.src)}" alt="${esc(f.alt)}" loading="lazy"></button><figcaption><b>${esc(f.titulo)}</b>${esc(f.texto)}</figcaption></figure>`).join('')}</div></div>`).join('')}
+    </section>` : ''}
     ${d.limitaciones?.length ? `<section class="pj-sec" id="limitaciones"><div class="eyebrow">Estado actual</div><h2>En desarrollo</h2>
       <div class="ver-aviso"><h3>Limitaciones de la versión actual</h3><ul class="dv-lim">${d.limitaciones.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></section>` : ''}
     <section class="pj-sec pj-cta"><div><h2>¿Querés saber más?</h2><p>Escribime y te cuento más sobre este desarrollo y cómo lo usamos en el campo.</p></div>

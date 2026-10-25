@@ -589,3 +589,13 @@ body.viewer-page { height: 100dvh; overflow: hidden; }
 }
 @media (max-width: 520px) { .nav a { margin-left: 11px; font-size: 13px; } }
 @media (max-width: 420px) { .nav a[href$="#servicios"] { display: none; } }
+
+.dv-scr { margin: 0 0 34px; }
+.dv-scr h3 { margin: 0 0 6px; font-size: 19px; }
+.dv-scr > p { margin: 0 0 16px; color: var(--muted); max-width: 70ch; }
+.dv-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; }
+.dv-shots figure { margin: 0; }
+.dv-shots .eq-ph { aspect-ratio: auto; border-radius: 16px; border: 3px solid #2b2d31; box-shadow: 0 10px 30px rgba(0,0,0,.5); width: 100%; padding: 0; }
+.dv-shots .eq-ph img { height: auto; }
+.dv-shots figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.dv-shots figcaption b { display: block; color: var(--text, inherit); font-size: 14px; margin-bottom: 2px; }
