@@ -590,7 +590,7 @@ async function initDesarrollo() {
         <div class="eyebrow">${esc(d.tipo || 'Desarrollo propio')}${d.estado ? ` · <span class="eq-badge">${esc(d.estado)}</span>` : ''}</div>
         <h1>${esc(d.nombre)}</h1>
         <p class="pj-intro">${esc(d.intro || d.resumen || '')}</p>
-        <div class="hero-actions"><a class="btn" href="#funciones">Funciones</a><a class="btn ghost" href="#limitaciones">Estado actual</a></div>
+        <div class="hero-actions"><a class="btn" href="#funciones">Funciones</a><a class="btn ghost" href="#limitaciones">Estado actual</a>${d.id === 'app-gnss' ? '<a class="btn" href="app/">Descargar la app</a>' : ''}</div>
       </div>
       <div class="dv-phones">${(d.capturas || []).map((f) => `<figure><button class="eq-ph" data-src="${esc(f.src)}" data-alt="${esc(f.alt)}"><img src="${esc(f.src)}" alt="${esc(f.alt)}"></button><figcaption><b>${esc(f.titulo)}</b>${esc(f.texto || '')}</figcaption></figure>`).join('')}</div>
     </section>
