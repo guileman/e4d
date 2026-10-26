@@ -602,3 +602,13 @@ body.viewer-page { height: 100dvh; overflow: hidden; }
 
 .dv-phones figcaption b { display: block; font-size: 13px; color: var(--accent); margin-bottom: 4px; }
 .dv-phones figcaption { text-transform: none; letter-spacing: 0; font-family: inherit; line-height: 1.4; }
+
+.dv-dl { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.dv-dl-info { flex: 1 1 300px; }
+.dv-dl-meta { margin: 8px 0 12px; color: var(--muted); font-family: var(--mono); font-size: 13px; }
+.dv-dl-pasos { margin: 0 0 10px; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.dv-dl-pasos li { margin: 0 0 4px; }
+.dv-dl-ayuda { font-size: 14px; }
+.dv-qr { background: #fff; padding: 10px; border-radius: 12px; line-height: 0; }
+.dv-qr[hidden] { display: none; }
+.dv-notes { margin: 14px 0 0; white-space: pre-wrap; font: inherit; font-size: 13.5px; color: var(--muted); }

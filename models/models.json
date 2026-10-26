@@ -1204,7 +1204,11 @@
             }
           ]
         }
-      ]
+      ],
+      "descarga": {
+        "repo": "guileman/GNSS",
+        "ayuda": "https://github.com/guileman/GNSS/blob/main/docs/ayuda/README.md"
+      }
     },
     {
       "id": "rover-1",

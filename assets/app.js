@@ -584,17 +584,24 @@ async function initDesarrollo() {
   document.title = `${d.nombre} · ${d.tipo} · ${data.sitio?.titulo || ''}`;
   setMeta(d.intro || d.resumen, `https://e4d.com.ar/${urlDesarrollo(d)}`, d.portada);
   const c = data.sitio?.contacto;
+  setTimeout(() => d.descarga && cargarDescarga(d.descarga.repo), 0);
   root.innerHTML = `
     <section class="pj-hero dv-hero">
       <div>
         <div class="eyebrow">${esc(d.tipo || 'Desarrollo propio')}${d.estado ? ` · <span class="eq-badge">${esc(d.estado)}</span>` : ''}</div>
         <h1>${esc(d.nombre)}</h1>
         <p class="pj-intro">${esc(d.intro || d.resumen || '')}</p>
-        <div class="hero-actions"><a class="btn" href="#funciones">Funciones</a><a class="btn ghost" href="#limitaciones">Estado actual</a>${d.id === 'app-gnss' ? '<a class="btn" href="app/">Descargar la app</a>' : ''}</div>
+        <div class="hero-actions"><a class="btn" href="#funciones">Funciones</a><a class="btn ghost" href="#limitaciones">Estado actual</a>${d.descarga ? '<a class="btn" href="#descargar">Descargar la app</a>' : ''}</div>
       </div>
       <div class="dv-phones">${(d.capturas || []).map((f) => `<figure><button class="eq-ph" data-src="${esc(f.src)}" data-alt="${esc(f.alt)}"><img src="${esc(f.src)}" alt="${esc(f.alt)}"></button><figcaption><b>${esc(f.titulo)}</b>${esc(f.texto || '')}</figcaption></figure>`).join('')}</div>
     </section>
     ${d.kpis ? `<section class="kpi-strip k${d.kpis.length}">${d.kpis.map(([v, k]) => `<div><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}</section>` : ''}
+    ${d.descarga ? `<section class="pj-sec" id="descargar"><div class="eyebrow">Android</div><h2>Descargar la app</h2>
+      <div class="pj-card dv-dl"><div class="dv-dl-info"><a id="dl-btn" class="btn" href="https://github.com/${esc(d.descarga.repo)}/releases/latest">Descargar APK</a><div class="dv-dl-meta" id="dl-meta">Buscando la última versión…</div>
+        <ol class="dv-dl-pasos"><li>Abrí esta página desde el teléfono Android (o escaneá el QR) y tocá <b>Descargar APK</b>.</li><li>Cuando Android lo pida, permití instalar apps desde este navegador.</li><li>Abrí el archivo descargado y tocá <b>Instalar</b>; aceptá los permisos de Bluetooth y ubicación.</li></ol>
+        ${d.descarga.ayuda ? `<a class="dv-dl-ayuda" href="${esc(d.descarga.ayuda)}" target="_blank" rel="noopener">Guía de uso →</a>` : ''}</div>
+        <div id="dl-qr" class="dv-qr" hidden aria-label="Código QR de descarga"></div></div>
+      <pre class="dv-notes" id="dl-notes" hidden></pre></section>` : ''}
     <section class="pj-sec" id="funciones"><div class="eyebrow">Qué hace</div><h2>Funciones</h2>
       <div class="dv-groups">${(d.grupos || []).map((g) => `<article class="pj-card"><h3>${esc(g.titulo)}</h3><ul>${g.items.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></article>`).join('')}</div>
     </section>
@@ -694,4 +701,27 @@ async function initProyecto() {
       <div class="pj-cta-btns">${contactButtons(c, `Hola Guillermo, vi el relevamiento "${m.titulo}" en tu web y quería consultarte por un trabajo similar.`)}</div>
     </section>` : ''}`;
   bindLightbox(root);
+}
+
+async function cargarDescarga(repo) {
+  const btn = document.getElementById('dl-btn'), meta = document.getElementById('dl-meta');
+  if (!btn) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}/releases/latest`);
+    if (!r.ok) throw new Error(r.status);
+    const rel = await r.json();
+    const apk = (rel.assets || []).find((a) => a.name.toLowerCase().endsWith('.apk'));
+    if (!apk) throw new Error('sin apk');
+    btn.href = apk.browser_download_url;
+    btn.textContent = `Descargar APK · ${rel.tag_name}`;
+    const fecha = new Date(rel.published_at).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+    meta.textContent = `Versión ${rel.tag_name} · ${fecha} · ${(apk.size / 1048576).toFixed(1)} MB`;
+    const notas = (rel.body || '').trim();
+    if (notas) { const n = document.getElementById('dl-notes'); n.textContent = notas; n.hidden = false; }
+    await new Promise((ok, no) => { if (window.QRCode) return ok(); const s = document.createElement('script'); s.src = 'assets/vendor/qrcode.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+    const q = document.getElementById('dl-qr'); q.innerHTML = ''; q.hidden = false;
+    new QRCode(q, { text: apk.browser_download_url, width: 132, height: 132, correctLevel: QRCode.CorrectLevel.M });
+  } catch (e) {
+    meta.textContent = 'Todavía no hay una versión publicada.';
+  }
 }
