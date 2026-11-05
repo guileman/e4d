@@ -66,7 +66,8 @@ function cargarModelo() {
       const c = new THREE.Box3().setFromObject(n).getCenter(new THREE.Vector3());
       piezas.push({ nodo: n, nombre: n.name || 'Pieza', centro: c, base: n.position.clone() });
     });
-    // Materiales: leves reflejos y sombra de color para lectura
+    // Cada pieza con su propio material: el GLB comparte materiales entre piezas y eso resaltaba piezas de más
+    modelo.traverse((o) => { if (o.isMesh) o.material = Array.isArray(o.material) ? o.material.map((m) => m.clone()) : o.material.clone(); });
     recorrerMateriales(modelo, (m) => { m.userData.opacidadBase = m.opacity ?? 1; m.userData.transparenteBase = m.transparent; });
     controls.target.copy(centro);
     camaraA({ dir: [0.6, 0.5, 0.9], dist: 1.25 }, centro, true);
