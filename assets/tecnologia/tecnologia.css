@@ -1,0 +1,71 @@
+/* Visor interactivo del Rover 1 */
+.tec { padding-top: 28px; padding-bottom: 40px; }
+.tec-volver { margin: 0 0 14px; font-size: 14px; }
+.tec-volver a { color: var(--muted); text-decoration: none; }
+.tec h1 { margin: 6px 0 10px; font-size: clamp(30px, 5vw, 46px); letter-spacing: -.02em; }
+.tec-intro { color: var(--muted); max-width: 66ch; margin: 0 0 24px; font-size: 17px; }
+
+.tec-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr); gap: 18px; align-items: stretch; }
+.tec-visor { position: relative; border: 1px solid var(--line, #26312b); border-radius: 18px; overflow: hidden; background: radial-gradient(120% 90% at 50% 20%, #1c2126 0%, #0c0e10 70%); min-height: 520px; display: flex; flex-direction: column; }
+.tec-canvas { position: absolute; inset: 0; }
+.tec-canvas canvas { display: block; touch-action: none; }
+.tec-etiquetas { position: absolute; inset: 0; pointer-events: none; }
+.tec-etq { position: absolute; left: 0; top: 0; pointer-events: auto; transform-origin: 0 0; margin: 0; padding: 4px 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.25); background: rgba(14,15,17,.82); color: #eef; font: 500 12px/1.2 var(--mono, monospace); cursor: pointer; white-space: nowrap; }
+.tec-etq:hover, .tec-etq:focus-visible { border-color: var(--accent, #e3a85c); outline: none; }
+
+.tec-carga { position: absolute; inset: 0; display: grid; place-content: center; gap: 12px; text-align: center; color: #cfd6e0; background: #0c0e10; transition: opacity .4s; }
+.tec-carga[hidden] { display: none; }
+.tec-carga p { margin: 0; font-family: var(--mono, monospace); font-size: 13px; }
+
+.tec-herr { position: relative; margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 10px 12px; background: rgba(14,15,17,.88); border-top: 1px solid rgba(255,255,255,.08); font-size: 13px; color: #cfd6e0; }
+.tec-herr button { font: inherit; color: inherit; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.tec-herr button[aria-pressed="true"] { background: var(--accent, #e3a85c); color: #151515; border-color: transparent; }
+.tec-herr button:focus-visible, .tec-herr input:focus-visible { outline: 2px solid var(--accent, #e3a85c); outline-offset: 2px; }
+.tec-herr label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.tec-ctl input[type="range"] { width: 110px; accent-color: var(--accent, #e3a85c); }
+
+.tec-panel { border: 1px solid var(--line, #26312b); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 14px; background: var(--card, #171e1a); }
+.tec-pasos-nav { display: flex; align-items: center; gap: 8px; }
+.tec-pasos-nav > button { width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--line, #26312b); background: transparent; color: inherit; cursor: pointer; font-size: 16px; flex: none; }
+.tec-pasos { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; flex: 1; }
+.tec-pasos button { width: 30px; height: 30px; border-radius: 999px; border: 1px solid var(--line, #26312b); background: transparent; color: inherit; font: 500 13px var(--mono, monospace); cursor: pointer; }
+.tec-pasos button.on { background: var(--accent, #e3a85c); color: #151515; border-color: transparent; }
+.tec-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-family: var(--mono, monospace); font-size: 12px; color: var(--muted); }
+.tec-meta button { font: inherit; border: 1px solid var(--line, #26312b); background: transparent; color: inherit; border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.tec-texto h2 { margin: 4px 0 8px; font-size: 22px; line-height: 1.2; }
+.tec-texto #paso-cuerpo { color: var(--muted); font-size: 15.5px; line-height: 1.6; }
+.tec-ficha { margin-top: auto; border-top: 1px solid var(--line, #26312b); padding-top: 12px; display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+.tec-ficha strong { color: inherit; }
+
+.tec-fisica { margin-top: 44px; }
+.tec-fisica h2 { margin: 4px 0 8px; font-size: 26px; }
+.tec-sub, .tec-nota { color: var(--muted); max-width: 70ch; margin: 0 0 16px; }
+.tec-fis { border: 1px solid var(--line, #26312b); border-radius: 18px; padding: 20px; background: var(--card, #171e1a); display: grid; gap: 18px; }
+.tec-slider { display: grid; gap: 6px; font-size: 15px; }
+.tec-slider output { font-family: var(--mono, monospace); color: var(--accent, #e3a85c); }
+.tec-slider input { width: 100%; accent-color: var(--accent, #e3a85c); }
+.tec-vals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.tec-vals > div { border: 1px solid var(--line, #26312b); border-radius: 12px; padding: 12px; display: grid; gap: 4px; }
+.tec-vals span { font-size: 12px; color: var(--muted); }
+.tec-vals b { font-family: var(--mono, monospace); font-size: 18px; font-weight: 500; }
+.tec-signo { margin: 0; font-weight: 600; }
+.tec-signo.ok { color: #7fd08f; }
+.tec-signo.bajo { color: #e08a7a; }
+
+.tec-cta { margin-top: 44px; border: 1px solid var(--line, #26312b); border-radius: 18px; padding: 24px; display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--card, #171e1a); }
+.tec-cta h2 { margin: 0 0 4px; font-size: 20px; }
+.tec-cta p { margin: 0; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .tec-grid { grid-template-columns: 1fr; }
+  .tec-visor { min-height: 440px; }
+  .tec-vals { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .tec-visor { min-height: 400px; }
+  .tec-herr { font-size: 12px; }
+  .tec-ctl input[type="range"] { width: 90px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tec-carga { transition: none; }
+}

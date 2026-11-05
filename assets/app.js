@@ -498,7 +498,7 @@ async function initEquipo() {
         <div class="eyebrow">${esc(e.tipo || 'Equipo')}${e.estado ? ` · <span class="eq-badge">${esc(e.estado)}</span>` : ''}</div>
         <h1>${esc(e.nombre)}</h1>
         <p class="pj-intro">${esc(P.intro)}</p>
-        <div class="hero-actions"><a class="btn" href="#ficha">Ficha técnica</a><a class="btn ghost" href="#pruebas">Pruebas de vuelo</a></div>
+        <div class="hero-actions"><a class="btn" href="#ficha">Ficha técnica</a><a class="btn ghost" href="#pruebas">Pruebas de vuelo</a>${e.id === 'rover-1' ? '<a class="btn ghost" href="equipos/rover-1/tecnologia/">Cómo vuela (animación 3D)</a>' : ''}</div>
       </div>
       ${fotos[0] ? `<button class="pj-cover eq-ph" data-src="${esc(fotos[0].src)}" data-alt="${esc(fotos[0].alt || '')}"><img src="${esc(fotos[0].src)}" alt="${esc(fotos[0].alt || e.nombre)}"></button>` : ''}
     </section>

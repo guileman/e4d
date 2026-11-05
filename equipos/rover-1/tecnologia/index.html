@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../../../">
+  <title>Cómo vuela el Rover 1 · Animación interactiva · e4d</title>
+  <meta name="description" content="Recorrido interactivo en 3D del Rover 1: chasis, motores, variadores, controladora, GPS RTK, batería y cámara. Qué hace cada parte y cómo se combinan para volar.">
+  <link rel="canonical" href="https://e4d.com.ar/equipos/rover-1/tecnologia/">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/e4d-icono.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <meta property="og:title" content="Cómo vuela el Rover 1 · e4d">
+  <meta property="og:description" content="Recorrido interactivo en 3D del dron de desarrollo propio, pieza por pieza.">
+  <meta property="og:image" content="https://e4d.com.ar/assets/brand/e4d-og.png">
+  <meta name="theme-color" content="#0e0f11">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css?v=33">
+  <link rel="stylesheet" href="assets/tecnologia/tecnologia.css?v=33">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./" aria-label="e4d · inicio"><img class="brand-logo" src="assets/brand/e4d-header.svg" alt="e4d" width="80" height="34"><img class="brand-mini" src="assets/brand/e4d-marca.svg" alt="e4d" width="34" height="34"></a>
+      <nav class="nav">
+        <a href="./#galeria">Casos</a>
+        <a href="./#desarrollos">Desarrollos</a>
+        <a href="./#equipos">Equipos</a>
+        <a href="./#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap tec">
+    <p class="tec-volver"><a href="equipos/rover-1/">← Volver a la ficha del Rover 1</a></p>
+    <div class="eyebrow">Desarrollo propio · Rover 1</div>
+    <h1>Cómo vuela el Rover 1</h1>
+    <p class="tec-intro">Recorrido en 3D por cada parte del dron: qué hace, cómo se conecta con las demás y por qué el conjunto puede sostener la cámara y la posición. Tocá los puntos o usá Reproducir.</p>
+
+    <div class="tec-grid">
+      <div class="tec-visor" id="visor">
+        <div id="vis" class="tec-canvas"></div>
+        <div id="etiquetas-capa" class="tec-etiquetas" aria-hidden="false"></div>
+        <div id="carga" class="tec-carga">
+          <p id="carga-txt">Cargando…</p>
+          <button id="carga-reintento" type="button" class="btn" hidden>Reintentar</button>
+        </div>
+        <div class="tec-herr" role="toolbar" aria-label="Herramientas del visor">
+          <label class="tec-ctl">Despiece <input id="despiece" type="range" min="0" max="1" step="0.01" value="0"></label>
+          <label class="tec-chk"><input id="corte" type="checkbox"> Corte</label>
+          <label class="tec-chk"><input id="etiquetas" type="checkbox"> Etiquetas</label>
+          <label class="tec-chk"><input id="flujo" type="checkbox"> Flujo de aire</label>
+          <button id="lenta" type="button" aria-pressed="false">Cámara lenta ×¼</button>
+          <button id="centrar" type="button">Centrar</button>
+          <button id="voz" type="button" aria-pressed="true" title="Leer en voz alta">🔊</button>
+        </div>
+      </div>
+
+      <aside class="tec-panel" aria-live="polite">
+        <div class="tec-pasos-nav">
+          <button id="ant" type="button" aria-label="Paso anterior">←</button>
+          <div id="pasos" class="tec-pasos" role="group" aria-label="Pasos"></div>
+          <button id="sig" type="button" aria-label="Paso siguiente">→</button>
+        </div>
+        <div class="tec-meta"><span id="paso-count"></span><button id="play" type="button">▶ Reproducir</button></div>
+        <div class="tec-texto">
+          <div class="eyebrow" id="paso-kicker"></div>
+          <h2 id="paso-titulo"></h2>
+          <div id="paso-cuerpo"></div>
+        </div>
+        <div class="tec-ficha">
+          <strong id="ficha-nombre">Tocá una pieza</strong>
+          <span id="ficha-texto">Al tocar una pieza del modelo aparece su descripción acá.</span>
+        </div>
+      </aside>
+    </div>
+
+    <section class="tec-fisica" aria-labelledby="fis-t">
+      <div class="eyebrow">Física del vuelo</div>
+      <h2 id="fis-t">Qué pasa al acelerar</h2>
+      <p class="tec-sub">Mové el control de potencia para ver cómo cambian las rpm y el empuje de cada motor, frente al peso del dron (3,07 kg). Es un modelo simplificado calibrado con los datos del Tarot 650.</p>
+      <div class="tec-fis">
+        <label class="tec-slider">Potencia de los motores <output id="f-s">54 %</output>
+          <input id="empuje" type="range" min="0" max="100" step="1" value="54">
+        </label>
+        <div class="tec-vals">
+          <div><span>Velocidad por motor</span><b><span id="f-rpm">—</span> rpm</b></div>
+          <div><span>Empuje por motor</span><b><span id="f-emp">—</span> N</b></div>
+          <div><span>Empuje total</span><b><span id="f-tot">—</span> N</b></div>
+          <div><span>Peso del dron</span><b><span id="f-peso">—</span> N</b></div>
+        </div>
+        <p id="f-sign" class="tec-signo"></p>
+      </div>
+      <p class="tec-nota">Referencia: en vuelo estacionario, el Rover 1 gira a unas 3.700 rpm con el 54 % de potencia, y en máxima potencia llega a unas 5.400 rpm.</p>
+    </section>
+
+    <section class="tec-cta">
+      <div>
+        <h2>¿Querés el mismo nivel de detalle en tu proyecto?</h2>
+        <p>Escribime y te cuento cómo relevamos con este dron.</p>
+      </div>
+      <a class="btn" href="https://wa.me/5493416904961?text=Hola%20Guillermo%2C%20vi%20la%20animaci%C3%B3n%20del%20Rover%201%20en%20tu%20web.">Escribir por WhatsApp</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© <span id="year"></span> Guillermo Díaz · e4d</span>
+      <span class="mono" style="font-size:12px">Rosario · Santa Fe</span>
+    </div>
+  </footer>
+
+  <script src="assets/tecnologia/visor.js?v=33"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
