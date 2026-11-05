@@ -7,9 +7,9 @@ export const R = {
   helice:  ['15x5'],
   bateria: ['Bateria', 'GensAce'],
   cuav:    ['CUAV NANO'],
-  rtk:     ['simpleRTK'],
+  rtk:     ['simpleRTK', 'BEITIAN'],   // placa RTK y antena helicoidal de arriba
   camara:  ['SONY A6000', 'cam holder'],
-  radio:   ['T10', 'BEITIAN'],
+  radio:   ['T10'],
 };
 
 // Pasos guiados: cada uno mueve la cámara, resalta piezas y puede activar capas.

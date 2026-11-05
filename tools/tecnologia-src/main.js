@@ -88,7 +88,8 @@ function errorCarga(msg, detalle) {
 // ---------- foco y transparencia ----------
 function coincide(nombre, reglas) {
   if (!reglas || !reglas.length) return false;
-  return reglas.some((r) => new RegExp(r, 'i').test(nombre));
+  const plano = nombre.replace(/_/g, ' '); // el GLB cambia los espacios por guiones bajos
+  return reglas.some((r) => new RegExp(r, 'i').test(plano));
 }
 
 function aplicarFoco(reglas) {
