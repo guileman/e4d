@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { PASOS, ETIQUETAS, FISICA, FICHAS } from './datos.js';
+import { R, PASOS, ETIQUETAS, FISICA, FICHAS } from './datos.js';
 
 const $ = (s) => document.querySelector(s);
 const root = $('#vis');
@@ -39,7 +39,7 @@ new ResizeObserver(ajustar).observe(root);
 ajustar();
 
 // ---------- modelo ----------
-let modelo = null, tamano = 1, centro = new THREE.Vector3();
+let modelo = null, tamano = 1, centro = new THREE.Vector3(), sueloY = 0;
 const piezas = []; // { nodo (de primer nivel), nombre, centro, base, materiales }
 const planosCorte = [new THREE.Plane(new THREE.Vector3(1, 0, 0), 0)];
 const estado = { paso: 0, despiece: 0, corte: false, etiquetas: false, flujo: false, lenta: false, sonido: true };
@@ -59,6 +59,7 @@ function cargarModelo() {
     scene.add(modelo);
     modelo.updateMatrixWorld(true);
     const caja = new THREE.Box3().setFromObject(modelo);
+    sueloY = caja.min.y;
     caja.getCenter(centro);
     tamano = caja.getSize(new THREE.Vector3()).length();
     // Piezas de primer nivel con nombre (para despiece, foco y etiquetas)
@@ -73,6 +74,7 @@ function cargarModelo() {
     camaraA({ dir: [0.6, 0.5, 0.9], dist: 1.25 }, centro, true);
     crearEtiquetas();
     crearFlujo();
+    crearRTK();
     $('#carga').hidden = true;
     mostrarPaso(0, false);
   }, (ev) => {
@@ -153,9 +155,13 @@ function mostrarPaso(i, hablar = true) {
   $('#paso-cuerpo').innerHTML = p.cuerpo;
   [...pasosEl.children].forEach((b, k) => b.classList.toggle('on', k === estado.paso));
   $('#paso-count').textContent = `${estado.paso + 1} / ${PASOS.length}`;
+  RTK.grupo.visible = !!p.rtk;
+  RTK.activos = new Set(p.enlaces || []);
+  Object.entries(RTK.enlaces).forEach(([k, e]) => { e.obj.visible = RTK.activos.has(k); });
   if (modelo) {
     aplicarFoco(p.foco);
-    camaraA(p.camara, p.foco ? centroDe(p.foco) : centro);
+    const objetivo = p.objetivo ? puntoRTK(p.objetivo) : (p.foco ? centroDe(p.foco) : centro);
+    camaraA(p.camara, objetivo);
     estado.corte = !!p.corte; corteCtl.checked = estado.corte; aplicarCorte();
     if (p.flujo !== undefined) { estado.flujo = !!p.flujo; flujoCtl.checked = estado.flujo; }
     if (p.etiquetas !== undefined) { estado.etiquetas = !!p.etiquetas; etiqCtl.checked = estado.etiquetas; mostrarEtiquetas(); }
@@ -347,9 +353,113 @@ function frame() {
     f.geo.attributes.position.needsUpdate = true;
   });
   renderer.render(scene, camera);
+  animarRTK(reloj.elapsedTime);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+
+
+// ---------- modo RTK: base, celular, ondas de radio y cables ----------
+const RTK = { grupo: new THREE.Group(), enlaces: {}, pts: {}, activos: new Set() };
+scene.add(RTK.grupo);
+RTK.grupo.visible = false;
+
+function puntoRTK(k) {
+  if (RTK.pts[k]) return RTK.pts[k].clone().add(new THREE.Vector3(0, k === 'base' || k === 'celular' ? tamano * 0.3 : 0, 0));
+  return centroDe(k === 'cuav' ? R.cuav : k === 'rtk' ? R.rtk : R.camara);
+}
+function etiquetaRTK(texto, pos) {
+  const c = document.createElement('canvas'); c.width = 384; c.height = 96;
+  const g = c.getContext('2d');
+  g.fillStyle = 'rgba(14,15,17,.85)'; g.beginPath(); g.roundRect(4, 4, 376, 88, 44); g.fill();
+  g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3; g.stroke();
+  g.fillStyle = '#eef'; g.font = '600 40px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(texto, 192, 50);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }));
+  sp.position.copy(pos);
+  sp.scale.set(tamano * 0.3, tamano * 0.075, 1);
+  return sp;
+}
+const MAT_ONDA = () => new THREE.MeshBasicMaterial({ color: 0x7fe0ff, transparent: true, opacity: 1, side: THREE.DoubleSide, depthWrite: false });
+const MAT_CABLE = new THREE.MeshStandardMaterial({ color: 0xffa040, emissive: 0xff7a00, emissiveIntensity: 0.7, roughness: 0.4 });
+
+function crearRTK() {
+  const cuav = centroDe(R.cuav), rtk = centroDe(R.rtk), cam = centroDe(R.camara);
+  const base = new THREE.Vector3(centro.x - tamano * 0.95, sueloY, centro.z + tamano * 0.75);
+  const cel = new THREE.Vector3(centro.x + tamano * 0.95, sueloY, centro.z + tamano * 0.4);
+  RTK.pts = { base, celular: cel, cuav, rtk, camara: cam };
+
+  // Base RTK: mástil con antena
+  const mast = new THREE.Group();
+  const tubo = new THREE.Mesh(new THREE.CylinderGeometry(tamano * 0.02, tamano * 0.03, tamano * 0.5, 16), new THREE.MeshStandardMaterial({ color: 0x9aa3ad }));
+  tubo.position.y = tamano * 0.25;
+  const ant = new THREE.Mesh(new THREE.CylinderGeometry(tamano * 0.05, tamano * 0.05, tamano * 0.08, 24), new THREE.MeshStandardMaterial({ color: 0x2b6cb0 }));
+  ant.position.y = tamano * 0.54;
+  mast.add(tubo, ant); mast.position.copy(base);
+  RTK.grupo.add(mast, etiquetaRTK('Base RTK', base.clone().add(new THREE.Vector3(0, tamano * 0.75, 0))));
+
+  // Celular con la app de control de tierra
+  const celG = new THREE.Group();
+  const cuerpo = new THREE.Mesh(new THREE.BoxGeometry(tamano * 0.12, tamano * 0.22, tamano * 0.02), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.3 }));
+  const pantalla = new THREE.Mesh(new THREE.PlaneGeometry(tamano * 0.1, tamano * 0.18), new THREE.MeshBasicMaterial({ color: 0x3fbf84 }));
+  pantalla.position.z = tamano * 0.0115;
+  celG.add(cuerpo, pantalla); celG.position.copy(cel).add(new THREE.Vector3(0, tamano * 0.13, 0));
+  RTK.grupo.add(celG, etiquetaRTK('Celular · app', cel.clone().add(new THREE.Vector3(0, tamano * 0.42, 0))));
+
+  // Punto de la foto (en el suelo, debajo del dron)
+  const pin = new THREE.Mesh(new THREE.RingGeometry(tamano * 0.04, tamano * 0.05, 32), new THREE.MeshBasicMaterial({ color: 0xffd166, side: THREE.DoubleSide }));
+  pin.rotation.x = -Math.PI / 2; pin.position.set(centro.x, sueloY + tamano * 0.002, centro.z);
+  RTK.grupo.add(pin, etiquetaRTK('Punto de la foto', new THREE.Vector3(centro.x, sueloY + tamano * 0.22, centro.z)));
+  RTK.pinFoto = pin;
+
+  // Enlaces
+  const defs = {
+    'base-celular': { de: base.clone().add(new THREE.Vector3(0, tamano * 0.5, 0)), a: cel.clone().add(new THREE.Vector3(0, tamano * 0.2, 0)), medio: 'radio' },
+    'celular-cuav': { de: cel.clone().add(new THREE.Vector3(0, tamano * 0.2, 0)), a: cuav.clone().add(new THREE.Vector3(0, tamano * 0.1, 0)), medio: 'radio' },
+    'cuav-rtk': { de: cuav.clone(), a: rtk.clone(), medio: 'cable' },
+    'cuav-camara': { de: cuav.clone(), a: cam.clone(), medio: 'cable' },
+  };
+  Object.entries(defs).forEach(([k, d]) => {
+    const obj = new THREE.Group();
+    obj.visible = false;
+    if (d.medio === 'radio') {
+      const anillos = [];
+      for (let i = 0; i < 5; i++) {
+        const m = new THREE.Mesh(new THREE.RingGeometry(0.8, 1, 28, 1, -Math.PI * 0.35, Math.PI * 0.7), MAT_ONDA());
+        obj.add(m); anillos.push(m);
+      }
+      RTK.enlaces[k] = { obj, tipo: 'radio', de: d.de, a: d.a, anillos };
+    } else {
+      const mid1 = d.de.clone().lerp(d.a, 0.33).add(new THREE.Vector3(0, tamano * 0.14, 0));
+      const mid2 = d.de.clone().lerp(d.a, 0.66).add(new THREE.Vector3(0, tamano * 0.14, 0));
+      const curva = new THREE.CatmullRomCurve3([d.de, mid1, mid2, d.a]);
+      const tubo = new THREE.Mesh(new THREE.TubeGeometry(curva, 48, tamano * 0.011, 8, false), MAT_CABLE);
+      const pulso = new THREE.Mesh(new THREE.SphereGeometry(tamano * 0.02, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      obj.add(tubo, pulso);
+      RTK.enlaces[k] = { obj, tipo: 'cable', curva, pulso };
+    }
+    RTK.grupo.add(obj);
+  });
+}
+
+function animarRTK(t) {
+  if (!RTK.grupo.visible) return;
+  Object.entries(RTK.enlaces).forEach(([k, e]) => {
+    if (!RTK.activos.has(k)) return;
+    if (e.tipo === 'radio') {
+      e.anillos.forEach((m, i) => {
+        const f = (i / e.anillos.length + t * 0.35) % 1;
+        m.position.lerpVectors(e.de, e.a, f);
+        m.lookAt(e.a);
+        m.scale.setScalar(tamano * (0.03 + 0.1 * f));
+        m.material.opacity = Math.pow(1 - f, 0.6);
+      });
+    } else {
+      e.pulso.position.copy(e.curva.getPointAt((t * 0.4) % 1));
+    }
+  });
+  if (RTK.pinFoto) RTK.pinFoto.scale.setScalar(1 + 0.15 * Math.sin(t * 3));
+}
 
 // ---------- arranque ----------
 $('#carga-reintento').addEventListener('click', () => { $('#carga-reintento').hidden = true; cargarModelo(); });
