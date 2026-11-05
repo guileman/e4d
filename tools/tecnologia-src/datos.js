@@ -1,15 +1,15 @@
 // Datos del visor del Rover 1. Para otro dron solo cambia este archivo y el GLB.
 // Los patrones (regex, sin distinguir mayúsculas) se comparan con el nombre de cada pieza del GLB.
 export const R = {
-  frame:   ['tarot', 'frame', 'chasis', 'brazo', 'arm', 'placa.*inf', 'placa.*sup'],
-  motor:   ['motor', 'gartt', '4108'],
-  esc:     ['esc', 'hobbywing', 'xrotor'],
-  helice:  ['h[ée]lice', 'prop', 'cfp'],
-  bateria: ['bater', 'battery', 'gensace', '18650'],
-  cuav:    ['cuav', 'v5'],
-  rtk:     ['ardusimple', 'rtk', 'simplertk', 'rtk2b'],
-  camara:  ['c[áa]mara', 'sony', 'a6000', 'cam holder', 'cam'],
-  radio:   ['skydroid', 'radio', 'antena'],
+  frame:   ['CarbonArm', 'ArmCopter', 'Lower ?Base', 'Upper ?Base', 'top base', 'clamp', 'Pletina'],
+  motor:   ['Motor 3508'],
+  esc:     ['hobbywing'],
+  helice:  ['15x5'],
+  bateria: ['Bateria', 'GensAce'],
+  cuav:    ['CUAV NANO'],
+  rtk:     ['simpleRTK'],
+  camara:  ['SONY A6000', 'cam holder'],
+  radio:   ['T10', 'BEITIAN'],
 };
 
 // Pasos guiados: cada uno mueve la cámara, resalta piezas y puede activar capas.

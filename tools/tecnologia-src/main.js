@@ -55,7 +55,9 @@ function cargarModelo() {
   loader.load('assets/tecnologia/tarot650.glb', (gltf) => {
     clearTimeout(tmo);
     modelo = gltf.scene;
+    modelo.rotation.y = Math.PI; // el frente del CAD (-Z) queda hacia el visor
     scene.add(modelo);
+    modelo.updateMatrixWorld(true);
     const caja = new THREE.Box3().setFromObject(modelo);
     caja.getCenter(centro);
     tamano = caja.getSize(new THREE.Vector3()).length();
