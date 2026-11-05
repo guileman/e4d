@@ -14,6 +14,9 @@ export const R = {
 
 // Pasos guiados: cada uno mueve la cámara, resalta piezas y puede activar capas.
 // camara.dir: dirección desde el objetivo; camara.dist: distancia en tamaños del modelo.
+// Sin resaltar nada: todo el dron queda fantasma
+const NINGUNA = ['__ninguna__'];
+
 export const PASOS = [
   {
     kicker: 'Paso 1 · Estructura',
@@ -76,42 +79,42 @@ export const PASOS = [
     kicker: 'Modo RTK · 1 de 6',
     titulo: 'La base RTK en tierra',
     cuerpo: 'Una estación fija con GNSS, en un punto de coordenadas conocidas, recibe los satélites y calcula en tiempo real el error de la señal. Envía esa corrección en formato RTCM por radio.',
-    rtk: true, enlaces: ['base-celular'], objetivo: 'base', foco: null,
+    rtk: true, enlaces: ['base-celular'], objetivo: 'base', foco: NINGUNA,
     camara: { dir: [-0.6, 0.45, 0.8], dist: 1.6 },
   },
   {
     kicker: 'Modo RTK · 2 de 6',
     titulo: 'La app de control de tierra',
     cuerpo: 'El celular recibe las correcciones RTCM y la app las convierte a MAVLink, el protocolo que entiende ArduPilot. Desde ahí las manda por telemetría por radio hacia el dron.',
-    rtk: true, enlaces: ['base-celular', 'celular-cuav'], objetivo: 'celular', foco: null,
+    rtk: true, enlaces: ['base-celular', 'celular-cuav'], objetivo: 'celular', foco: NINGUNA,
     camara: { dir: [0.5, 0.5, 0.9], dist: 1.6 },
   },
   {
     kicker: 'Modo RTK · 3 de 6',
     titulo: 'La CUAV V5 reenvía la corrección',
     cuerpo: 'La controladora recibe esos mensajes por telemetría y los pasa por un cable serie (UART) a la placa simpleRTK2B Lite.',
-    rtk: true, enlaces: ['celular-cuav', 'cuav-rtk'], objetivo: 'cuav', foco: null,
+    rtk: true, enlaces: ['celular-cuav', 'cuav-rtk'], objetivo: 'cuav', foco: [...R.cuav],
     camara: { dir: [0.6, 0.6, 0.7], dist: 0.8 },
   },
   {
     kicker: 'Modo RTK · 4 de 6',
     titulo: 'La placa RTK llega al FIX',
     cuerpo: 'Con la corrección y sus propios satélites, la placa resuelve las ambigüedades y obtiene la solución FIX: posición con precisión centimétrica.',
-    rtk: true, enlaces: ['cuav-rtk'], objetivo: 'rtk', foco: null,
+    rtk: true, enlaces: ['cuav-rtk'], objetivo: 'rtk', foco: [...R.rtk],
     camara: { dir: [0.7, 0.5, 0.6], dist: 0.6 },
   },
   {
     kicker: 'Modo RTK · 5 de 6',
     titulo: 'La CUAV dispara la cámara',
     cuerpo: 'Cuando toca fotografiar, la controladora manda una señal por cable a la Sony A6000 para que tome la foto.',
-    rtk: true, enlaces: ['cuav-camara'], objetivo: 'camara', foco: null,
+    rtk: true, enlaces: ['cuav-camara'], objetivo: 'camara', foco: [...R.cuav, ...R.camara],
     camara: { dir: [0.2, 0.3, 1], dist: 0.7 },
   },
   {
     kicker: 'Modo RTK · 6 de 6',
     titulo: 'La foto queda georreferenciada',
     cuerpo: 'En ese mismo instante la CUAV registra la posición RTK. Así cada foto queda guardada con el punto exacto donde se tomó, marcado en el suelo.',
-    rtk: true, enlaces: ['cuav-camara'], objetivo: 'camara', foco: null,
+    rtk: true, pin: true, enlaces: ['cuav-camara'], objetivo: 'camara', foco: [...R.camara],
     camara: { dir: [0.9, 1.1, 0.9], dist: 1.6 },
   },
   {

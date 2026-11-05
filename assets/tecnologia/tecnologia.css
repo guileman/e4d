@@ -5,8 +5,8 @@
 .tec h1 { margin: 6px 0 10px; font-size: clamp(30px, 5vw, 46px); letter-spacing: -.02em; }
 .tec-intro { color: var(--muted); max-width: 66ch; margin: 0 0 24px; font-size: 17px; }
 
-.tec-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr); gap: 18px; align-items: stretch; }
-.tec-visor { position: relative; border: 1px solid var(--line, #26312b); border-radius: 18px; overflow: hidden; background: radial-gradient(120% 90% at 50% 20%, #1c2126 0%, #0c0e10 70%); min-height: 520px; display: flex; flex-direction: column; }
+.tec-grid { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(260px, 1fr); gap: 18px; align-items: stretch; }
+.tec-visor { position: relative; border: 1px solid var(--line, #26312b); border-radius: 18px; overflow: hidden; background: radial-gradient(120% 90% at 50% 20%, #1c2126 0%, #0c0e10 70%); height: min(84vh, 900px); min-height: 560px; display: flex; flex-direction: column; }
 .tec-canvas { position: absolute; inset: 0; }
 .tec-canvas canvas { display: block; touch-action: none; }
 .tec-etiquetas { position: absolute; inset: 0; pointer-events: none; }

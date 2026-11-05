@@ -156,6 +156,7 @@ function mostrarPaso(i, hablar = true) {
   [...pasosEl.children].forEach((b, k) => b.classList.toggle('on', k === estado.paso));
   $('#paso-count').textContent = `${estado.paso + 1} / ${PASOS.length}`;
   RTK.grupo.visible = !!p.rtk;
+  if (RTK.pinEt) RTK.pinEt.visible = !!p.pin;
   RTK.activos = new Set(p.enlaces || []);
   Object.entries(RTK.enlaces).forEach(([k, e]) => { e.obj.visible = RTK.activos.has(k); });
   if (modelo) {
@@ -409,7 +410,8 @@ function crearRTK() {
   // Punto de la foto (en el suelo, debajo del dron)
   const pin = new THREE.Mesh(new THREE.RingGeometry(tamano * 0.04, tamano * 0.05, 32), new THREE.MeshBasicMaterial({ color: 0xffd166, side: THREE.DoubleSide }));
   pin.rotation.x = -Math.PI / 2; pin.position.set(centro.x, sueloY + tamano * 0.002, centro.z);
-  RTK.grupo.add(pin, etiquetaRTK('Punto de la foto', new THREE.Vector3(centro.x, sueloY + tamano * 0.22, centro.z)));
+  RTK.pinEt = etiquetaRTK('Punto de la foto', new THREE.Vector3(centro.x, sueloY + tamano * 0.22, centro.z));
+  RTK.grupo.add(pin, RTK.pinEt);
   RTK.pinFoto = pin;
 
   // Enlaces
@@ -430,11 +432,11 @@ function crearRTK() {
       }
       RTK.enlaces[k] = { obj, tipo: 'radio', de: d.de, a: d.a, anillos };
     } else {
-      const mid1 = d.de.clone().lerp(d.a, 0.33).add(new THREE.Vector3(0, tamano * 0.14, 0));
-      const mid2 = d.de.clone().lerp(d.a, 0.66).add(new THREE.Vector3(0, tamano * 0.14, 0));
+      const mid1 = d.de.clone().lerp(d.a, 0.33).add(new THREE.Vector3(0, tamano * 0.02, 0));
+      const mid2 = d.de.clone().lerp(d.a, 0.66).add(new THREE.Vector3(0, tamano * 0.02, 0));
       const curva = new THREE.CatmullRomCurve3([d.de, mid1, mid2, d.a]);
-      const tubo = new THREE.Mesh(new THREE.TubeGeometry(curva, 48, tamano * 0.011, 8, false), MAT_CABLE);
-      const pulso = new THREE.Mesh(new THREE.SphereGeometry(tamano * 0.02, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      const tubo = new THREE.Mesh(new THREE.TubeGeometry(curva, 48, tamano * 0.0022, 8, false), MAT_CABLE);
+      const pulso = new THREE.Mesh(new THREE.SphereGeometry(tamano * 0.004, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
       obj.add(tubo, pulso);
       RTK.enlaces[k] = { obj, tipo: 'cable', curva, pulso };
     }
