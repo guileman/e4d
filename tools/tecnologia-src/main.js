@@ -69,7 +69,7 @@ function cargarModelo() {
     });
     // Cada pieza con su propio material: el GLB comparte materiales entre piezas y eso resaltaba piezas de más
     modelo.traverse((o) => { if (o.isMesh) o.material = Array.isArray(o.material) ? o.material.map((m) => m.clone()) : o.material.clone(); });
-    recorrerMateriales(modelo, (m) => { m.userData.opacidadBase = m.opacity ?? 1; m.userData.transparenteBase = m.transparent; m.userData.color = m.color.clone(); });
+    recorrerMateriales(modelo, (m) => { m.userData.opacidadBase = m.opacity ?? 1; m.userData.transparenteBase = m.transparent; m.userData.color = m.color.clone(); m.userData.metal = m.metalness; m.userData.rough = m.roughness; });
     controls.target.copy(centro);
     camaraA({ dir: [0.6, 0.5, 0.9], dist: 1.25 }, centro, true);
     crearEtiquetas();
@@ -95,6 +95,32 @@ function coincide(nombre, reglas) {
 }
 
 const GRIS = new THREE.Color(0xa3aab3);
+// Colores finales (paso "Todo junto"): carbono negro, cúpula blanca, motores plateados, Sony negra
+function colorFinal(nombre) {
+  const n = nombre.replace(/_/g, ' ');
+  if (/capota/i.test(n)) return { c: 0xf4f4f4, metal: 0, rough: 0.35 };
+  if (/motor 3508/i.test(n)) return { c: 0xc9ced4, metal: 0.85, rough: 0.28 };
+  if (/sony/i.test(n)) return { c: 0x0c0c0c, metal: 0, rough: 0.9 };
+  return { c: 0x1d1f22, metal: 0.05, rough: 0.55 };
+}
+function aplicarColoresFinales() {
+  if (!modelo) return;
+  piezas.forEach((p) => {
+    const f = colorFinal(p.nombre);
+    p.nodo.traverse((o) => {
+      if (!o.isMesh) return;
+      (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
+        m.color.setHex(f.c);
+        m.metalness = f.metal;
+        m.roughness = f.rough;
+        m.transparent = false;
+        m.opacity = 1;
+        m.depthWrite = true;
+        m.needsUpdate = true;
+      });
+    });
+  });
+}
 function aplicarFoco(reglas) {
   if (!modelo) return;
   const hay = !!(reglas && reglas.length);
@@ -105,6 +131,8 @@ function aplicarFoco(reglas) {
       if (!o.isMesh) return;
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
         m.color.copy(res ? m.userData.color : GRIS);
+        m.metalness = m.userData.metal ?? m.metalness;
+        m.roughness = m.userData.rough ?? m.roughness;
         m.transparent = fuera || m.userData.transparenteBase;
         m.opacity = fuera ? 0.12 : (m.userData.opacidadBase ?? 1);
         m.depthWrite = !fuera;
@@ -160,7 +188,7 @@ function mostrarPaso(i, hablar = true) {
   RTK.activos = new Set(p.enlaces || []);
   Object.entries(RTK.enlaces).forEach(([k, e]) => { e.obj.visible = RTK.activos.has(k); });
   if (modelo) {
-    aplicarFoco(p.foco);
+    if (p.colores === 'final') aplicarColoresFinales(); else aplicarFoco(p.foco);
     const objetivo = p.objetivo ? puntoRTK(p.objetivo) : (p.foco ? centroDe(p.foco) : centro);
     camaraA(p.camara, objetivo);
     estado.corte = !!p.corte; corteCtl.checked = estado.corte; aplicarCorte();
