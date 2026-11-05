@@ -68,7 +68,7 @@ function cargarModelo() {
     });
     // Cada pieza con su propio material: el GLB comparte materiales entre piezas y eso resaltaba piezas de más
     modelo.traverse((o) => { if (o.isMesh) o.material = Array.isArray(o.material) ? o.material.map((m) => m.clone()) : o.material.clone(); });
-    recorrerMateriales(modelo, (m) => { m.userData.opacidadBase = m.opacity ?? 1; m.userData.transparenteBase = m.transparent; });
+    recorrerMateriales(modelo, (m) => { m.userData.opacidadBase = m.opacity ?? 1; m.userData.transparenteBase = m.transparent; m.userData.color = m.color.clone(); });
     controls.target.copy(centro);
     camaraA({ dir: [0.6, 0.5, 0.9], dist: 1.25 }, centro, true);
     crearEtiquetas();
@@ -92,16 +92,20 @@ function coincide(nombre, reglas) {
   return reglas.some((r) => new RegExp(r, 'i').test(plano));
 }
 
+const GRIS = new THREE.Color(0xa3aab3);
 function aplicarFoco(reglas) {
   if (!modelo) return;
+  const hay = !!(reglas && reglas.length);
   piezas.forEach((p) => {
-    const en = !reglas || !reglas.length || coincide(p.nombre, reglas);
+    const res = hay && coincide(p.nombre, reglas);   // pieza del paso: color original
+    const fuera = hay && !res;                          // resto del modelo: fantasma
     p.nodo.traverse((o) => {
       if (!o.isMesh) return;
       (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
-        m.transparent = !en || m.userData.transparenteBase;
-        m.opacity = en ? (m.userData.opacidadBase ?? 1) : 0.12;
-        m.depthWrite = en;
+        m.color.copy(res ? m.userData.color : GRIS);
+        m.transparent = fuera || m.userData.transparenteBase;
+        m.opacity = fuera ? 0.12 : (m.userData.opacidadBase ?? 1);
+        m.depthWrite = !fuera;
         m.needsUpdate = true;
       });
     });
