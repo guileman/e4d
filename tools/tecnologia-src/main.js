@@ -76,11 +76,11 @@ function cargarModelo() {
     mostrarPaso(0, false);
   }, (ev) => {
     if (ev.total) $('#carga-txt').textContent = `Cargando modelo 3D… ${Math.round((ev.loaded / ev.total) * 100)} %`;
-  }, (err) => { clearTimeout(tmo); errorCarga('No se pudo cargar el modelo 3D.'); console.error(err); });
+  }, (err) => { clearTimeout(tmo); errorCarga('No se pudo cargar el modelo 3D.', (err && (err.message || err.type)) || String(err)); console.error(err); });
 }
 
-function errorCarga(msg) {
-  $('#carga-txt').textContent = msg;
+function errorCarga(msg, detalle) {
+  $('#carga-txt').textContent = msg + (detalle ? ' (' + String(detalle).slice(0, 160) + ')' : '');
   $('#carga-reintento').hidden = false;
 }
 
