@@ -52,7 +52,7 @@ function cargarModelo() {
   const loader = new GLTFLoader();
   $('#carga-txt').textContent = 'Cargando modelo 3D…';
   const tmo = setTimeout(() => errorCarga('El modelo tarda demasiado. Revisá la conexión y reintentá.'), 60000);
-  loader.load('assets/tecnologia/tarot650.glb', (gltf) => {
+  loader.load('assets/tecnologia/tarot650.glb?v=34', (gltf) => {
     clearTimeout(tmo);
     modelo = gltf.scene;
     modelo.rotation.y = Math.PI; // el frente del CAD (-Z) queda hacia el visor
