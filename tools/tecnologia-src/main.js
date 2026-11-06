@@ -48,6 +48,28 @@ function recorrerMateriales(obj, fn) {
   obj.traverse((o) => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(fn); });
 }
 
+// Despiece: solo se separan motores, hélices, ESC, CUAV, RTK, batería y cámara.
+// Cada motor se mueve como una unidad (sus piezas internas no se separan entre sí).
+function calcularDespiece() {
+  const grupos = new Map();
+  const explotables = [R.motor, R.helice, R.esc, R.cuav, R.rtk, R.bateria, R.camara];
+  piezas.forEach((p) => {
+    p.desp = null;
+    if (!explotables.some((r) => coincide(p.nombre, r))) return;
+    const plano = p.nombre.replace(/_/g, ' ');
+    const clave = coincide(p.nombre, R.motor) ? plano.replace(/ \/ [^/]+$/, '') : plano;
+    if (!grupos.has(clave)) grupos.set(clave, []);
+    grupos.get(clave).push(p);
+  });
+  grupos.forEach((miembros) => {
+    const c = miembros.reduce((a, p) => a.add(p.centro), new THREE.Vector3()).multiplyScalar(1 / miembros.length);
+    let dir = c.clone().sub(centro);
+    if (dir.lengthSq() < 1e-8) dir = new THREE.Vector3(0, 1, 0);
+    dir.normalize();
+    miembros.forEach((p) => { p.desp = dir.clone(); });
+  });
+}
+
 function cargarModelo() {
   const loader = new GLTFLoader();
   $('#carga-txt').textContent = 'Cargando modelo 3D…';
@@ -73,6 +95,7 @@ function cargarModelo() {
     controls.target.copy(centro);
     camaraA({ dir: [0.6, 0.5, 0.9], dist: 1.25 }, centro, true);
     crearEtiquetas();
+    calcularDespiece();
     crearFlujo();
     crearRTK();
     $('#carga').hidden = true;
@@ -356,8 +379,8 @@ function frame() {
   }
   if (modelo) {
     piezas.forEach((p) => {
-      const dir = p.centro.clone().sub(centro).normalize();
-      p.nodo.position.copy(p.base).addScaledVector(dir, estado.despiece * tamano * 0.18);
+      p.nodo.position.copy(p.base);
+      if (p.desp) p.nodo.position.addScaledVector(p.desp, estado.despiece * tamano * 0.22);
     });
     // etiquetas: posición en pantalla
     if (estado.etiquetas) {
